@@ -2,871 +2,660 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050510">
 <title>GENX ECOSYSTEM</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>🌙</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🌙</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Firebase v10 (module) -->
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,
-  GoogleAuthProvider,signInWithPopup,signOut as SO,onAuthStateChanged,
-  setPersistence,browserLocalPersistence}
-  from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import{getFirestore,doc,setDoc,getDoc,updateDoc,collection,
-  addDoc,query,where,getDocs,serverTimestamp,Timestamp}
-  from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<!-- reCAPTCHA v3 -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LcybJ4sAAAAAKhu5iCNlgQNgYUMlaPk4QA-HknX"></script>
 
-/* ── REPLACE THESE WITH YOUR FIREBASE CONFIG ── */
-const cfg={
-   apiKey: "AIzaSyDKf1R5rLXIT7rBZuQ5Q-9AIkqTVtPX97w",
-  authDomain: "genx-7aea0.firebaseapp.com",
-  projectId: "genx-7aea0",
-  storageBucket: "genx-7aea0.firebasestorage.app",
-  messagingSenderId: "276475030043",
-  appId: "1:276475030043:web:ca34651c496c38fc1966be"
-};
-const app=initializeApp(cfg);
-const auth=getAuth(app);
-const db=getFirestore(app);
-const gp=new GoogleAuthProvider();
-try{await setPersistence(auth,browserLocalPersistence);}catch{}
-window.__fb={auth,db,gp,createUserWithEmailAndPassword,signInWithEmailAndPassword,
-  signInWithPopup,SO,onAuthStateChanged,doc,setDoc,getDoc,updateDoc,collection,
-  addDoc,query,where,getDocs,serverTimestamp,Timestamp};
-window.dispatchEvent(new Event('fb-ready'));
-</script>
-
-<!-- reCAPTCHA v3 — REPLACE YOUR_RC_KEY -->
-<script src="https://www.google.com/recaptcha/api.js?render=6LcybJ4sAAAAAKhu5iCNlgQNgYUMlaPk4QA-HknX" async></script>
-
-<!-- PayPal SDK — REPLACE YOUR_PP_CLIENT_ID -->
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PP_CLIENT_ID&currency=USD&intent=capture&components=buttons" async></script>
+<!-- PayPal — replace client-id -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&intent=capture&components=buttons" defer></script>
 
 <style>
-/* ═══════════════════════════════════════════
-   THEME DESIGN TOKENS
-═══════════════════════════════════════════ */
+/* ═══════════════════ TOKENS ═══════════════════ */
 :root{
-  --a1:#5dffc8;--a2:#ff5252;--a3:#bf7fff;
+  --a1:#4dffc0;--a2:#ff4d4d;--a3:#b266ff;
   --eo:cubic-bezier(.22,1,.36,1);--esp:cubic-bezier(.34,1.56,.64,1);
-  --td:.35s;--tf:.16s;
+  --t:.3s;--tf:.13s;
 }
+/* DARK */
 [data-theme=dark]{
-  --bg:#04040b;--s1:#0c0c1a;--s2:#111128;--s3:#161632;
-  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.14);
-  --tx:#ebebf8;--mu:rgba(235,235,248,.44);--mu2:rgba(235,235,248,.22);
-  --nav:rgba(4,4,11,.94);--inp:#07071c;
-  --moon-fill:#ffffff;--moon-glow:rgba(255,255,255,.25);
+  --bg:#050510;--s1:#0c0c20;--s2:#101028;--s3:#141435;
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.13);
+  --tx:#eaeaf5;--mu:rgba(234,234,245,.44);--mu2:rgba(234,234,245,.22);
+  --nav:rgba(5,5,16,.93);--inp:#08082a;
+  --moon:#d0d0ff;--mglow:rgba(180,180,255,.20);
   --sh:0 8px 48px rgba(0,0,0,.6);
+  --star:#fff;
 }
+/* LIGHT — premium */
 [data-theme=light]{
-  --bg:#ededf8;--s1:#ffffff;--s2:#e8e8f5;--s3:#dedeed;
-  --bd:rgba(30,30,90,.09);--bd2:rgba(30,30,90,.18);
-  --tx:#12122a;--mu:rgba(18,18,42,.50);--mu2:rgba(18,18,42,.28);
-  --nav:rgba(237,237,248,.96);--inp:#f5f5ff;
-  --moon-fill:#111122;--moon-glow:rgba(20,20,60,.22);
-  --sh:0 8px 48px rgba(30,30,90,.12);
-  --a1:#00c896;--a2:#e03030;--a3:#8838d0;
+  --bg:#f0f0ff;--s1:#fff;--s2:#e8e8f8;--s3:#dcdcf0;
+  --bd:rgba(80,60,160,.10);--bd2:rgba(80,60,160,.20);
+  --tx:#0e0e28;--mu:rgba(14,14,40,.50);--mu2:rgba(14,14,40,.28);
+  --nav:rgba(240,240,255,.96);--inp:#f5f5ff;
+  --moon:#0e0e28;--mglow:rgba(20,20,60,.16);
+  --sh:0 8px 48px rgba(80,60,160,.12);
+  --a1:#00b085;--a2:#cc2222;--a3:#7722cc;
+  --star:#7060b0;
 }
 
-/* ═══════════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════════ */
+/* ═══════════════════ RESET ═══════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-tap-highlight-color:transparent}
 body{
-  background:var(--bg);color:var(--tx);
-  font-family:'Syne',sans-serif;min-height:100svh;overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-  transition:background var(--td) var(--eo),color var(--td) var(--eo);
+  background:var(--bg);color:var(--tx);font-family:'Syne',sans-serif;
+  min-height:100svh;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  transition:background var(--t) var(--eo),color var(--t) var(--eo);
 }
-button{font-family:'Syne',sans-serif;color:inherit;cursor:default}
-a{cursor:default}
+button{font-family:'Syne',sans-serif;color:inherit;border:none;background:none}
+a{color:inherit;text-decoration:none}
 @media(pointer:fine){body{cursor:none}}
 
-/* ═══════════════════════════════════════════
-   CURSOR (GPU-only: left/top via rAF)
-═══════════════════════════════════════════ */
+/* ═══════════════════ CURSOR ═══════════════════ */
 #cur,#cring{display:none;position:fixed;pointer-events:none;border-radius:50%;z-index:9999}
 @media(pointer:fine){
   #cur{display:block;width:8px;height:8px;background:var(--a1);
     transform:translate(-50%,-50%);mix-blend-mode:difference;
     transition:width var(--tf),height var(--tf)}
-  #cring{display:block;z-index:9998;width:28px;height:28px;
-    border:1.5px solid rgba(93,255,200,.4);transform:translate(-50%,-50%)}
+  #cring{display:block;z-index:9998;width:26px;height:26px;
+    border:1.5px solid rgba(77,255,192,.36);transform:translate(-50%,-50%)}
 }
 
-/* ═══════════════════════════════════════════
-   GRID BACKGROUND
-═══════════════════════════════════════════ */
+/* ═══════════════════ STARS (CSS only, zero JS) ═══════════════════ */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.stars span{
+  position:absolute;background:var(--star);border-radius:50%;
+  animation:twk var(--d,3s) ease-in-out infinite var(--dl,0s);
+  opacity:0;will-change:opacity;
+}
+@keyframes twk{0%,100%{opacity:0}50%{opacity:var(--op,.7)}}
+/* 40 stars generated via nth-child */
+.stars span:nth-child(1){width:2px;height:2px;top:8%;left:12%;--d:3.1s;--dl:.2s;--op:.7}
+.stars span:nth-child(2){width:1px;height:1px;top:15%;left:82%;--d:2.6s;--dl:1.1s;--op:.5}
+.stars span:nth-child(3){width:2px;height:2px;top:22%;left:45%;--d:4.0s;--dl:.5s;--op:.6}
+.stars span:nth-child(4){width:1px;height:1px;top:5%;left:68%;--d:2.8s;--dl:1.8s;--op:.4}
+.stars span:nth-child(5){width:2px;height:2px;top:35%;left:25%;--d:3.5s;--dl:.9s;--op:.6}
+.stars span:nth-child(6){width:1px;height:1px;top:42%;left:90%;--d:2.4s;--dl:.3s;--op:.5}
+.stars span:nth-child(7){width:2px;height:2px;top:55%;left:8%;--d:3.8s;--dl:1.4s;--op:.7}
+.stars span:nth-child(8){width:1px;height:1px;top:18%;left:55%;--d:2.9s;--dl:.7s;--op:.4}
+.stars span:nth-child(9){width:2px;height:2px;top:70%;left:72%;--d:4.2s;--dl:.1s;--op:.6}
+.stars span:nth-child(10){width:1px;height:1px;top:12%;left:30%;--d:3.3s;--dl:2.0s;--op:.5}
+.stars span:nth-child(11){width:2px;height:2px;top:88%;left:20%;--d:2.7s;--dl:.6s;--op:.7}
+.stars span:nth-child(12){width:1px;height:1px;top:6%;left:95%;--d:3.6s;--dl:1.3s;--op:.4}
+.stars span:nth-child(13){width:2px;height:2px;top:60%;left:38%;--d:2.5s;--dl:.8s;--op:.6}
+.stars span:nth-child(14){width:1px;height:1px;top:80%;left:60%;--d:4.1s;--dl:1.7s;--op:.5}
+.stars span:nth-child(15){width:2px;height:2px;top:30%;left:78%;--d:3.0s;--dl:.4s;--op:.7}
+.stars span:nth-child(16){width:1px;height:1px;top:48%;left:15%;--d:2.3s;--dl:1.6s;--op:.4}
+.stars span:nth-child(17){width:2px;height:2px;top:92%;left:85%;--d:3.9s;--dl:.2s;--op:.6}
+.stars span:nth-child(18){width:1px;height:1px;top:25%;left:5%;--d:2.6s;--dl:1.0s;--op:.5}
+.stars span:nth-child(19){width:2px;height:2px;top:65%;left:50%;--d:4.3s;--dl:.5s;--op:.7}
+.stars span:nth-child(20){width:1px;height:1px;top:3%;left:40%;--d:3.2s;--dl:1.9s;--op:.4}
+.stars span:nth-child(21){width:2px;height:2px;top:75%;left:28%;--d:2.8s;--dl:.3s;--op:.6}
+.stars span:nth-child(22){width:1px;height:1px;top:50%;left:65%;--d:3.7s;--dl:1.2s;--op:.5}
+.stars span:nth-child(23){width:2px;height:2px;top:10%;left:75%;--d:2.4s;--dl:.7s;--op:.7}
+.stars span:nth-child(24){width:1px;height:1px;top:38%;left:88%;--d:4.0s;--dl:1.5s;--op:.4}
+.stars span:nth-child(25){width:2px;height:2px;top:83%;left:42%;--d:3.1s;--dl:.9s;--op:.6}
+.stars span:nth-child(26){width:1px;height:1px;top:20%;left:18%;--d:2.9s;--dl:2.1s;--op:.5}
+.stars span:nth-child(27){width:2px;height:2px;top:95%;left:10%;--d:3.4s;--dl:.1s;--op:.7}
+.stars span:nth-child(28){width:1px;height:1px;top:45%;left:48%;--d:2.5s;--dl:1.1s;--op:.4}
+.stars span:nth-child(29){width:2px;height:2px;top:58%;left:82%;--d:4.2s;--dl:.6s;--op:.6}
+.stars span:nth-child(30){width:1px;height:1px;top:28%;left:62%;--d:3.0s;--dl:1.8s;--op:.5}
+.stars span:nth-child(31){width:2px;height:2px;top:72%;left:5%;--d:2.7s;--dl:.4s;--op:.7}
+.stars span:nth-child(32){width:1px;height:1px;top:14%;left:92%;--d:3.8s;--dl:1.3s;--op:.4}
+.stars span:nth-child(33){width:2px;height:2px;top:40%;left:33%;--d:2.3s;--dl:.8s;--op:.6}
+.stars span:nth-child(34){width:1px;height:1px;top:85%;left:55%;--d:4.0s;--dl:1.6s;--op:.5}
+.stars span:nth-child(35){width:2px;height:2px;top:2%;left:22%;--d:3.5s;--dl:.2s;--op:.7}
+.stars span:nth-child(36){width:1px;height:1px;top:68%;left:98%;--d:2.6s;--dl:1.0s;--op:.4}
+.stars span:nth-child(37){width:2px;height:2px;top:52%;left:72%;--d:3.9s;--dl:.5s;--op:.6}
+.stars span:nth-child(38){width:1px;height:1px;top:32%;left:8%;--d:2.4s;--dl:1.9s;--op:.5}
+.stars span:nth-child(39){width:2px;height:2px;top:78%;left:35%;--d:4.1s;--dl:.3s;--op:.7}
+.stars span:nth-child(40){width:1px;height:1px;top:17%;left:50%;--d:3.3s;--dl:1.4s;--op:.4}
+/* Hide stars in light mode (subtle) */
+[data-theme=light] .stars span{--op:.25}
+
+/* ═══════════════════ GRID BG ═══════════════════ */
 .gbg{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    linear-gradient(rgba(93,255,200,.016) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(93,255,200,.016) 1px,transparent 1px);
-  background-size:60px 60px;transition:opacity var(--td) var(--eo)}
-[data-theme=light] .gbg{opacity:.25}
+  background-image:linear-gradient(rgba(77,255,192,.014) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(77,255,192,.014) 1px,transparent 1px);
+  background-size:60px 60px;transition:opacity var(--t) var(--eo)}
+[data-theme=light] .gbg{opacity:.2}
 
-/* ═══════════════════════════════════════════
-   CRESCENT MOON — CSS only, no canvas
-═══════════════════════════════════════════ */
+/* ═══════════════════ MOON ═══════════════════ */
 .moon-wrap{
-  position:fixed;top:60px;right:clamp(40px,8vw,120px);z-index:1;
-  pointer-events:none;
-  animation:moonFloat 7s ease-in-out infinite;will-change:transform;
+  position:fixed;z-index:1;pointer-events:none;
+  /* Desktop: top right */
+  top:68px;right:clamp(24px,6vw,96px);
+  animation:mfl 8s ease-in-out infinite;will-change:transform;
 }
-@keyframes moonFloat{
-  0%,100%{transform:translateY(0) rotate(-2deg)}
-  50%{transform:translateY(-14px) rotate(3deg)}
+/* On mobile: move to bottom right, smaller */
+@media(max-width:600px){
+  .moon-wrap{top:auto;bottom:80px;right:16px}
 }
+@keyframes mfl{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-11px) rotate(4deg)}}
 .moon{
-  position:relative;width:clamp(64px,9vw,110px);height:clamp(64px,9vw,110px);
-  border-radius:50%;
-  /* Glow */
-  filter:drop-shadow(0 0 22px var(--moon-glow)) drop-shadow(0 0 60px var(--moon-glow));
-  transition:filter var(--td) var(--eo);
+  position:relative;
+  width:clamp(52px,7.5vw,92px);height:clamp(52px,7.5vw,92px);
+  filter:drop-shadow(0 0 14px var(--mglow)) drop-shadow(0 0 40px var(--mglow));
+  transition:filter var(--t) var(--eo);
 }
-/* Full circle in moon color */
-.moon-disc{
-  position:absolute;inset:0;border-radius:50%;
-  background:var(--moon-fill);
-  transition:background var(--td) var(--eo);
-}
-/* Shadow overlay to carve crescent */
-.moon-shadow{
-  position:absolute;
-  width:85%;height:85%;
-  border-radius:50%;
-  /* In dark mode: dark shadow = appears removed from right side */
-  background:var(--bg);
-  top:7%;left:20%;
-  transition:background var(--td) var(--eo);
-}
-/* Crater 1 */
-.moon-disc::before{
-  content:'';position:absolute;
-  width:18%;height:18%;border-radius:50%;
-  background:rgba(0,0,0,.12);
-  top:28%;left:12%;
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.2);
-}
-/* Crater 2 */
-.moon-disc::after{
-  content:'';position:absolute;
-  width:11%;height:11%;border-radius:50%;
-  background:rgba(0,0,0,.10);
-  top:55%;left:8%;
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.18);
-}
-/* Extra craters via a child element */
-.moon-craters{position:absolute;inset:0;border-radius:50%;overflow:hidden;z-index:1}
-.moon-craters span{display:block;position:absolute;border-radius:50%;background:rgba(0,0,0,.09);box-shadow:inset 0 1px 2px rgba(0,0,0,.15)}
-.moon-craters .cr1{width:13%;height:13%;top:42%;left:16%}
-.moon-craters .cr2{width:9%;height:9%;top:18%;left:6%}
-.moon-craters .cr3{width:7%;height:7%;top:66%;left:14%}
-/* Star twinkle group near moon */
-.moon-stars{position:absolute;top:-30px;left:-50px;pointer-events:none}
-.mst{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--moon-fill);
-  opacity:.6;animation:twinkle 2.5s ease-in-out infinite;transition:background var(--td) var(--eo)}
-.mst:nth-child(1){top:0;left:0;animation-delay:0s}
-.mst:nth-child(2){top:15px;left:-25px;width:2px;height:2px;animation-delay:.7s}
-.mst:nth-child(3){top:-8px;left:-40px;width:2px;height:2px;animation-delay:1.4s}
-.mst:nth-child(4){top:30px;left:-10px;width:2px;height:2px;animation-delay:.3s}
-@keyframes twinkle{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:.15;transform:scale(.6)}}
+.moon-disc{position:absolute;inset:0;border-radius:50%;background:var(--moon);transition:background var(--t) var(--eo);overflow:hidden}
+/* Craters */
+.moon-disc::before{content:'';position:absolute;width:15%;height:15%;border-radius:50%;top:25%;left:10%;background:rgba(0,0,0,.12);box-shadow:inset 0 1px 2px rgba(0,0,0,.20)}
+.moon-disc::after{content:'';position:absolute;width:9%;height:9%;border-radius:50%;top:50%;left:7%;background:rgba(0,0,0,.09);box-shadow:inset 0 1px 2px rgba(0,0,0,.16)}
+.mc{position:absolute;border-radius:50%;background:rgba(0,0,0,.08);box-shadow:inset 0 1px 2px rgba(0,0,0,.14)}
+.mc1{width:10%;height:10%;top:38%;left:14%}
+.mc2{width:6%;height:6%;top:15%;left:5%}
+.mc3{width:5%;height:5%;top:62%;left:12%}
+/* Shadow to carve crescent */
+.moon-cut{position:absolute;width:82%;height:82%;border-radius:50%;top:9%;left:17%;background:var(--bg);transition:background var(--t) var(--eo)}
+/* Mini stars near moon */
+.mst{position:absolute;border-radius:50%;background:var(--moon);transition:background var(--t) var(--eo);animation:twk var(--d,3s) ease-in-out infinite var(--dl,0s);opacity:0}
+.mst:nth-child(1){width:2px;height:2px;top:-22px;left:-10px;--d:2.8s;--dl:0s;--op:.65}
+.mst:nth-child(2){width:2px;height:2px;top:-12px;left:-34px;--d:3.2s;--dl:.7s;--op:.5}
+.mst:nth-child(3){width:2px;height:2px;top:5px;left:-44px;--d:2.5s;--dl:1.3s;--op:.55}
 
-/* ═══════════════════════════════════════════
-   CAPTCHA GATE
-═══════════════════════════════════════════ */
+/* ═══════════════════ CAPTCHA GATE ═══════════════════ */
 #gate{
   position:fixed;inset:0;z-index:8000;
-  background:var(--bg);display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:20px;
-  transition:opacity .5s var(--eo);
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;
+  transition:opacity .4s var(--eo),background var(--t) var(--eo);
 }
-#gate.hiding{opacity:0;pointer-events:none}
-#gate.hidden{display:none}
-.gate-moon{font-size:48px;animation:moonFloat 4s ease-in-out infinite}
-.gate-title{font-size:1.2rem;font-weight:800;color:var(--tx);letter-spacing:-.02em;transition:color var(--td) var(--eo)}
-.gate-sub{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);letter-spacing:.08em;text-align:center;max-width:280px;line-height:1.7;transition:color var(--td) var(--eo)}
-.gate-spinner{width:32px;height:32px;border:2.5px solid var(--bd2);border-top-color:var(--a1);border-radius:50%;animation:spin .7s linear infinite}
+#gate.fade{opacity:0;pointer-events:none}
+#gate.gone{display:none}
+.g-ico{font-size:44px;animation:mfl 4s ease-in-out infinite}
+.g-ttl{font-size:1.1rem;font-weight:800;color:var(--tx);letter-spacing:-.02em;transition:color var(--t)}
+.g-sub{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);letter-spacing:.07em;text-align:center;max-width:240px;line-height:1.7;transition:color var(--t)}
+.g-sp{width:28px;height:28px;border:2.5px solid var(--bd2);border-top-color:var(--a1);border-radius:50%;animation:spin .65s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.gate-fail{display:none;text-align:center}
-.gate-fail.v{display:block}
-.gate-fail p{font-family:'Space Mono',monospace;font-size:11px;color:var(--a2);margin-bottom:12px}
+.g-fail{display:none;text-align:center}
+.g-fail.v{display:block}
+.g-fail p{font-family:'Space Mono',monospace;font-size:11px;color:var(--a2);margin-bottom:10px}
 
-/* ═══════════════════════════════════════════
-   PAGES
-═══════════════════════════════════════════ */
+/* ═══════════════════ PAGES ═══════════════════ */
 .page{
   position:fixed;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   display:flex;flex-direction:column;align-items:center;
   opacity:0;pointer-events:none;
-  transform:translate3d(0,16px,0);
-  /* Only opacity + transform = GPU, zero layout */
-  transition:opacity .26s var(--eo),transform .26s var(--eo);
-  will-change:opacity,transform;contain:layout style;
+  transform:translate3d(0,14px,0);
+  transition:opacity .24s var(--eo),transform .24s var(--eo);
+  will-change:opacity,transform;
 }
 .page.active{opacity:1;pointer-events:all;transform:translate3d(0,0,0)}
-.page.exit{opacity:0;transform:translate3d(0,-12px,0);transition-duration:.14s}
+.page.exit{opacity:0;transform:translate3d(0,-10px,0);transition-duration:.12s}
 
-/* ═══════════════════════════════════════════
-   NAV
-═══════════════════════════════════════════ */
+/* ═══════════════════ NAV ═══════════════════ */
 nav{
   position:sticky;top:0;z-index:100;width:100%;flex-shrink:0;
-  padding:0 clamp(14px,4vw,40px);height:58px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:0 clamp(14px,4vw,36px);height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
   border-bottom:1px solid var(--bd);
   background:var(--nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  /* contain prevents nav from triggering page layout */
-  contain:layout style;
-  transition:background var(--td) var(--eo),border-color var(--td) var(--eo);
+  transition:background var(--t) var(--eo),border-color var(--t) var(--eo);
 }
-.nlogo{font-weight:800;font-size:.86rem;letter-spacing:.06em;white-space:nowrap;
+.nlogo{font-weight:800;font-size:.84rem;letter-spacing:.06em;white-space:nowrap;
   background:linear-gradient(135deg,var(--a1),var(--a3));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .navr{display:flex;align-items:center;gap:7px;flex-shrink:0}
 
-/* ═══════════════════════════════════════════
-   THEME TOGGLE
-═══════════════════════════════════════════ */
-.tb{
-  width:56px;height:28px;border-radius:100px;
-  background:var(--s2);border:1px solid var(--bd);position:relative;
-  flex-shrink:0;transition:background var(--td) var(--eo),border-color var(--td) var(--eo);
-}
-.tt{
-  position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
-  background:linear-gradient(135deg,var(--a3),var(--a1));font-size:11px;
-  display:flex;align-items:center;justify-content:center;pointer-events:none;
-  transition:left .24s var(--esp);
-}
-[data-theme=light] .tt{left:31px}
-.ti{position:absolute;font-size:11px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
-.ti-d{right:7px}.ti-l{left:7px}
+/* ═══════════════════ THEME BTN ═══════════════════ */
+.tb{width:52px;height:26px;border-radius:100px;background:var(--s2);border:1px solid var(--bd);
+  position:relative;flex-shrink:0;transition:background var(--t),border-color var(--t)}
+.tt{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--a3),var(--a1));
+  display:flex;align-items:center;justify-content:center;font-size:10px;
+  pointer-events:none;transition:left .22s var(--esp)}
+[data-theme=light] .tt{left:29px}
+.ti{position:absolute;font-size:10px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
+.ti-d{right:6px}.ti-l{left:6px}
 
-/* ═══════════════════════════════════════════
-   SMALL BUTTON
-═══════════════════════════════════════════ */
-.sb{
-  display:inline-flex;align-items:center;gap:5px;
-  font-family:'Space Mono',monospace;font-size:clamp(9px,1.1vw,11px);
-  color:var(--mu);letter-spacing:.07em;text-transform:uppercase;
-  border:1px solid var(--bd);padding:5px 11px;border-radius:8px;background:transparent;
-  white-space:nowrap;
-  transition:color .13s,border-color .13s,background .13s,transform 65ms var(--esp);
-  contain:layout style;
-}
-.sb:hover{color:var(--a1);border-color:rgba(93,255,200,.26);background:rgba(93,255,200,.05)}
-.sb:active{transform:scale(.92)}
+/* ═══════════════════ SMALL BTN ═══════════════════ */
+.sb{display:inline-flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;
+  font-size:clamp(9px,1vw,11px);color:var(--mu);letter-spacing:.07em;text-transform:uppercase;
+  border:1px solid var(--bd);padding:5px 10px;border-radius:7px;background:transparent;
+  white-space:nowrap;transition:color .12s,border-color .12s,background .12s,transform 60ms var(--esp)}
+.sb:hover{color:var(--a1);border-color:rgba(77,255,192,.22);background:rgba(77,255,192,.05)}
+.sb:active{transform:scale(.91)}
 
-/* ═══════════════════════════════════════════
-   HOME PAGE
-═══════════════════════════════════════════ */
-.hw{
-  position:relative;z-index:2;min-height:100svh;width:100%;
+/* ═══════════════════ HOME ═══════════════════ */
+.hw{position:relative;z-index:2;min-height:100svh;width:100%;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:clamp(60px,10vw,90px) clamp(16px,5vw,40px) clamp(40px,6vw,52px);
-}
-.badge{
-  display:inline-flex;align-items:center;gap:8px;padding:5px 14px;
-  border:1px solid rgba(93,255,200,.26);border-radius:100px;
-  font-family:'Space Mono',monospace;font-size:clamp(9px,1.1vw,11px);
-  color:var(--a1);letter-spacing:.12em;text-transform:uppercase;
-  margin-bottom:clamp(18px,3.5vw,28px);background:rgba(93,255,200,.05);
-  opacity:0;animation:aUp .4s var(--eo) forwards .04s;
-}
+  padding:clamp(56px,9vw,86px) clamp(14px,5vw,40px) clamp(34px,5vw,48px)}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;
+  border:1px solid rgba(77,255,192,.22);border-radius:100px;
+  font-family:'Space Mono',monospace;font-size:clamp(9px,1vw,11px);
+  color:var(--a1);letter-spacing:.11em;text-transform:uppercase;
+  margin-bottom:clamp(16px,3vw,26px);background:rgba(77,255,192,.05);
+  opacity:0;animation:aUp .38s var(--eo) forwards .04s}
 .bdot{width:5px;height:5px;background:var(--a1);border-radius:50%;flex-shrink:0;animation:blink 2s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.45)}}
-.htit{
-  font-size:clamp(2.3rem,7vw,7rem);font-weight:800;line-height:.91;
-  text-align:center;letter-spacing:-.03em;
-  margin-bottom:clamp(11px,2vw,18px);
-  opacity:0;animation:aUp .4s var(--eo) forwards .11s;
-}
-.htit .l1{display:block;color:var(--tx);transition:color var(--td) var(--eo)}
-.htit .l2{
-  display:block;background-size:200%;
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.15;transform:scale(.4)}}
+.htit{font-size:clamp(2.1rem,6vw,7rem);font-weight:800;line-height:.91;text-align:center;
+  letter-spacing:-.03em;margin-bottom:clamp(10px,1.8vw,16px);
+  opacity:0;animation:aUp .38s var(--eo) forwards .10s}
+.htit .l1{display:block;color:var(--tx);transition:color var(--t) var(--eo)}
+.htit .l2{display:block;background-size:200%;
   background:linear-gradient(135deg,var(--a1) 0%,var(--a3) 50%,var(--a2) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:gs 5s ease-in-out infinite;
-}
+  animation:gs 5s ease-in-out infinite}
 @keyframes gs{0%,100%{background-position:0%}50%{background-position:100%}}
-.hsub{
-  font-family:'Space Mono',monospace;font-size:clamp(11px,1.3vw,13px);
-  color:var(--mu);text-align:center;max-width:360px;line-height:1.85;
-  letter-spacing:.03em;margin-bottom:clamp(30px,6vw,50px);
-  opacity:0;animation:aUp .4s var(--eo) forwards .18s;padding:0 8px;
-  transition:color var(--td) var(--eo);
-}
-.sep{
-  width:1px;height:42px;
-  background:linear-gradient(to bottom,transparent,rgba(93,255,200,.30),transparent);
-  margin:0 auto clamp(18px,3.5vw,30px);
-  opacity:0;animation:aUp .4s var(--eo) forwards .22s;
-}
+.hsub{font-family:'Space Mono',monospace;font-size:clamp(11px,1.2vw,13px);
+  color:var(--mu);text-align:center;max-width:340px;line-height:1.85;letter-spacing:.03em;
+  margin-bottom:clamp(26px,5vw,46px);opacity:0;animation:aUp .38s var(--eo) forwards .16s;
+  padding:0 8px;transition:color var(--t) var(--eo)}
+.sep{width:1px;height:38px;background:linear-gradient(to bottom,transparent,rgba(77,255,192,.26),transparent);
+  margin:0 auto clamp(16px,3vw,26px);opacity:0;animation:aUp .38s var(--eo) forwards .20s}
 
-/* ═══════════════════════════════════════════
-   CARDS
-═══════════════════════════════════════════ */
-.cards{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(10px,1.8vw,16px);width:100%;max-width:940px;
-  opacity:0;animation:aUp .4s var(--eo) forwards .27s;
-}
-@media(max-width:840px){.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.cards{grid-template-columns:1fr}}
-.card{
-  position:relative;background:var(--s1);border:1px solid var(--bd);border-radius:18px;
-  padding:clamp(17px,3.2vw,28px) clamp(15px,2.8vw,24px) clamp(17px,3vw,24px);
-  overflow:hidden;
-  /* contain prevents children from causing layout outside */
-  contain:layout style;
-  will-change:transform;
-  transition:
-    background var(--td) var(--eo),
-    border-color .22s var(--eo),
-    transform .22s var(--eo),
-    box-shadow .22s var(--eo);
-}
-.card::before{
-  content:'';position:absolute;inset:0;background:var(--cg);opacity:0;
-  transition:opacity .22s var(--eo);pointer-events:none;
-}
-.card::after{
-  content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;
+/* ═══════════════════ CARDS ═══════════════════ */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(10px,1.6vw,15px);width:100%;max-width:900px;
+  opacity:0;animation:aUp .38s var(--eo) forwards .25s}
+@media(max-width:780px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.cards{grid-template-columns:1fr}}
+.card{position:relative;background:var(--s1);border:1px solid var(--bd);border-radius:16px;
+  padding:clamp(15px,3vw,26px) clamp(13px,2.5vw,22px) clamp(15px,2.8vw,22px);
+  overflow:hidden;will-change:transform;
+  transition:background var(--t) var(--eo),border-color .20s var(--eo),transform .20s var(--eo),box-shadow .20s var(--eo)}
+.card::before{content:'';position:absolute;inset:0;background:var(--cg);opacity:0;
+  transition:opacity .20s var(--eo);pointer-events:none}
+.card::after{content:'';position:absolute;top:0;left:-100%;width:48%;height:100%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);
-  transform:skewX(-18deg);transition:left .6s var(--eo);pointer-events:none;
-}
+  transform:skewX(-18deg);transition:left .55s var(--eo);pointer-events:none}
 .card:hover::after{left:160%}
 .card:hover{transform:translate3d(0,-6px,0)}
 .card:hover::before{opacity:1}
-.c1{--cg:radial-gradient(ellipse at top left,rgba(93,255,200,.08),transparent 65%)}
-.c1:hover{border-color:rgba(93,255,200,.26);box-shadow:0 18px 44px rgba(93,255,200,.07)}
-.c2{--cg:radial-gradient(ellipse at top left,rgba(255,82,82,.08),transparent 65%)}
-.c2:hover{border-color:rgba(255,82,82,.26);box-shadow:0 18px 44px rgba(255,82,82,.07)}
-.c3{--cg:radial-gradient(ellipse at top left,rgba(191,127,255,.08),transparent 65%)}
-.c3:hover{border-color:rgba(191,127,255,.26);box-shadow:0 18px 44px rgba(191,127,255,.07)}
-.cco{position:absolute;top:0;right:0;width:60px;height:60px;overflow:hidden;pointer-events:none}
-.cco::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;
-  background:var(--cc);clip-path:polygon(100% 0,0 0,100% 100%);opacity:.07}
-.c1 .cco{--cc:var(--a1)}.c2 .cco{--cc:var(--a2)}.c3 .cco{--cc:var(--a3)}
-.cico{
-  width:38px;height:38px;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;font-size:17px;margin-bottom:clamp(12px,2.2vw,18px);
-  transition:transform .17s var(--esp);
-}
-.card:hover .cico{transform:scale(1.12) rotate(-5deg)}
-.c1 .cico{background:rgba(93,255,200,.10);border:1px solid rgba(93,255,200,.20)}
-.c2 .cico{background:rgba(255,82,82,.10);border:1px solid rgba(255,82,82,.20)}
-.c3 .cico{background:rgba(191,127,255,.10);border:1px solid rgba(191,127,255,.20)}
-.ctag{font-family:'Space Mono',monospace;font-size:clamp(8px,1vw,9px);letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ct);margin-bottom:5px;display:block}
-.c1 .ctag{--ct:var(--a1)}.c2 .ctag{--ct:var(--a2)}.c3 .ctag{--ct:var(--a3)}
-.ctit{font-size:clamp(.98rem,1.9vw,1.25rem);font-weight:800;letter-spacing:-.02em;
-  margin-bottom:5px;color:var(--tx);transition:color var(--td) var(--eo)}
-.cdsc{font-size:clamp(10px,1.1vw,12px);color:var(--mu);line-height:1.68;
-  margin-bottom:clamp(13px,2.3vw,20px);font-family:'Space Mono',monospace;
-  transition:color var(--td) var(--eo)}
-.ftr{
-  margin-top:clamp(28px,5vw,52px);font-family:'Space Mono',monospace;
-  font-size:clamp(10px,1.1vw,11px);color:var(--mu);letter-spacing:.08em;
-  text-align:center;opacity:0;animation:aUp .4s var(--eo) forwards .44s;
-  padding:0 16px;transition:color var(--td) var(--eo);
-}
+.c1{--cg:radial-gradient(ellipse at top left,rgba(77,255,192,.08),transparent 65%)}
+.c1:hover{border-color:rgba(77,255,192,.22);box-shadow:0 14px 40px rgba(77,255,192,.07)}
+.c2{--cg:radial-gradient(ellipse at top left,rgba(255,77,77,.08),transparent 65%)}
+.c2:hover{border-color:rgba(255,77,77,.22);box-shadow:0 14px 40px rgba(255,77,77,.07)}
+.c3{--cg:radial-gradient(ellipse at top left,rgba(178,102,255,.08),transparent 65%)}
+.c3:hover{border-color:rgba(178,102,255,.22);box-shadow:0 14px 40px rgba(178,102,255,.07)}
+.c4{--cg:radial-gradient(ellipse at top left,rgba(255,180,77,.08),transparent 65%)}
+.c4:hover{border-color:rgba(255,180,77,.22);box-shadow:0 14px 40px rgba(255,180,77,.07)}
+.cco{position:absolute;top:0;right:0;width:55px;height:55px;overflow:hidden;pointer-events:none}
+.cco::before{content:'';position:absolute;top:0;right:0;width:55px;height:55px;
+  background:var(--cc);clip-path:polygon(100% 0,0 0,100% 100%);opacity:.06}
+.c1 .cco{--cc:var(--a1)}.c2 .cco{--cc:var(--a2)}.c3 .cco{--cc:var(--a3)}.c4 .cco{--cc:#ffb44d}
+.cico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:16px;margin-bottom:clamp(10px,2vw,16px);
+  transition:transform .15s var(--esp)}
+.card:hover .cico{transform:scale(1.10) rotate(-5deg)}
+.c1 .cico{background:rgba(77,255,192,.10);border:1px solid rgba(77,255,192,.18)}
+.c2 .cico{background:rgba(255,77,77,.10);border:1px solid rgba(255,77,77,.18)}
+.c3 .cico{background:rgba(178,102,255,.10);border:1px solid rgba(178,102,255,.18)}
+.c4 .cico{background:rgba(255,180,77,.10);border:1px solid rgba(255,180,77,.18)}
+.ctag{font-family:'Space Mono',monospace;font-size:clamp(7px,.85vw,9px);letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ct);margin-bottom:4px;display:block}
+.c1 .ctag{--ct:var(--a1)}.c2 .ctag{--ct:var(--a2)}.c3 .ctag{--ct:var(--a3)}.c4 .ctag{--ct:#ffb44d}
+.ctit{font-size:clamp(.94rem,1.7vw,1.2rem);font-weight:800;letter-spacing:-.02em;
+  margin-bottom:4px;color:var(--tx);transition:color var(--t) var(--eo)}
+.cdsc{font-size:clamp(10px,.95vw,12px);color:var(--mu);line-height:1.66;
+  margin-bottom:clamp(11px,2vw,18px);font-family:'Space Mono',monospace;transition:color var(--t) var(--eo)}
+.ftr{margin-top:clamp(24px,4vw,46px);font-family:'Space Mono',monospace;
+  font-size:clamp(10px,1vw,11px);color:var(--mu);letter-spacing:.07em;text-align:center;
+  opacity:0;animation:aUp .38s var(--eo) forwards .40s;padding:0 14px;transition:color var(--t) var(--eo)}
 .ftr span{color:var(--a1)}
 
-/* ═══════════════════════════════════════════
-   BUTTONS
-═══════════════════════════════════════════ */
-.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:clamp(9px,1.4vw,11px) clamp(13px,1.8vw,19px);
+/* ═══════════════════ BUTTONS ═══════════════════ */
+.btn{display:inline-flex;align-items:center;gap:7px;
+  padding:clamp(9px,1.3vw,11px) clamp(12px,1.7vw,18px);
   border-radius:9px;font-family:'Syne',sans-serif;font-weight:700;
-  font-size:clamp(12px,1.3vw,14px);position:relative;overflow:hidden;border:none;
-  letter-spacing:.01em;white-space:nowrap;
-  will-change:transform;contain:layout style;
-  transition:transform 65ms var(--esp),box-shadow .16s var(--eo),filter .16s;
-}
-.btn::before{
-  content:'';position:absolute;inset:0;
+  font-size:clamp(12px,1.2vw,14px);position:relative;overflow:hidden;
+  white-space:nowrap;will-change:transform;
+  transition:transform 60ms var(--esp),box-shadow .15s var(--eo)}
+.btn::before{content:'';position:absolute;inset:0;
   background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);
-  transform:translateX(-110%);transition:transform .48s var(--eo);pointer-events:none;
-}
+  transform:translateX(-110%);transition:transform .46s var(--eo);pointer-events:none}
 .btn:hover::before{transform:translateX(110%)}
-.btn:hover{transform:scale(1.044)}
-.btn:active{transform:scale(.954)}
-.btn:disabled{opacity:.38;pointer-events:none}
-.b1{background:var(--a1);color:#04040b;box-shadow:0 3px 16px rgba(93,255,200,.25)}
-.b1:hover{box-shadow:0 8px 26px rgba(93,255,200,.42)}
-.b2{background:var(--a2);color:#fff;box-shadow:0 3px 16px rgba(255,82,82,.25)}
-.b2:hover{box-shadow:0 8px 26px rgba(255,82,82,.42)}
-.b3{background:var(--a3);color:#fff;box-shadow:0 3px 16px rgba(191,127,255,.25)}
-.b3:hover{box-shadow:0 8px 26px rgba(191,127,255,.42)}
+.btn:hover{transform:scale(1.040)}
+.btn:active{transform:scale(.953)}
+.btn:disabled{opacity:.34;pointer-events:none}
+.b1{background:var(--a1);color:#050510;box-shadow:0 3px 13px rgba(77,255,192,.24)}
+.b1:hover{box-shadow:0 6px 22px rgba(77,255,192,.40)}
+.b2{background:var(--a2);color:#fff;box-shadow:0 3px 13px rgba(255,77,77,.24)}
+.b2:hover{box-shadow:0 6px 22px rgba(255,77,77,.40)}
+.b3{background:var(--a3);color:#fff;box-shadow:0 3px 13px rgba(178,102,255,.24)}
+.b3:hover{box-shadow:0 6px 22px rgba(178,102,255,.40)}
+.b4{background:#ffb44d;color:#1a0a00;box-shadow:0 3px 13px rgba(255,180,77,.24)}
+.b4:hover{box-shadow:0 6px 22px rgba(255,180,77,.40)}
 .bgh{background:var(--s1);border:1px solid var(--bd2);color:var(--tx);
-  transition:background var(--td),border-color var(--td),color var(--td),transform 65ms var(--esp)}
+  transition:background var(--t),border-color var(--t),color var(--t),transform 60ms var(--esp)}
 .bgh:hover{background:var(--s2)}
-.bico{font-size:13px;transition:transform .16s var(--eo);display:inline-block}
+.bico{font-size:13px;transition:transform .14s var(--eo);display:inline-block}
 .btn:hover .bico{transform:translate3d(4px,0,0)}
-/* Ripple */
-.rpl{position:absolute;border-radius:50%;background:rgba(255,255,255,.18);
-  transform:scale(0);animation:ripA .42s linear;pointer-events:none}
+.rpl{position:absolute;border-radius:50%;background:rgba(255,255,255,.17);
+  transform:scale(0);animation:ripA .40s linear;pointer-events:none}
 @keyframes ripA{to{transform:scale(5);opacity:0}}
 
-/* ═══════════════════════════════════════════
-   AUTH PAGES
-═══════════════════════════════════════════ */
+/* ═══════════════════ LIGHT MODE PREMIUM ACCENTS ═══════════════════ */
+[data-theme=light] .card{box-shadow:0 2px 16px rgba(80,60,160,.07)}
+[data-theme=light] .abox{box-shadow:0 4px 32px rgba(80,60,160,.10)}
+[data-theme=light] nav{box-shadow:0 1px 20px rgba(80,60,160,.08)}
+
+/* ═══════════════════ AUTH ═══════════════════ */
 .awrap{position:relative;z-index:2;min-height:100svh;width:100%;
   display:flex;align-items:center;justify-content:center;
-  padding:clamp(52px,8vw,70px) clamp(16px,5vw,40px)}
-.abox{
-  background:var(--s1);border:1px solid var(--bd);border-radius:20px;
-  padding:clamp(22px,4.5vw,38px);max-width:380px;width:100%;
+  padding:clamp(48px,7vw,64px) clamp(14px,5vw,40px)}
+.abox{background:var(--s1);border:1px solid var(--bd);border-radius:19px;
+  padding:clamp(20px,4vw,34px);max-width:370px;width:100%;
   position:relative;overflow:hidden;
-  animation:aUp .34s var(--eo) both;box-shadow:var(--sh);
-  transition:background var(--td) var(--eo),border-color var(--td) var(--eo);
-}
+  animation:aUp .30s var(--eo) both;box-shadow:var(--sh);
+  transition:background var(--t) var(--eo),border-color var(--t) var(--eo)}
 .abox::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--a3),transparent);
   animation:linep 2.5s ease-in-out infinite}
-@keyframes linep{0%,100%{opacity:.28;transform:scaleX(.38)}50%{opacity:1;transform:scaleX(1)}}
-.alogo{font-size:1.7rem;text-align:center;margin-bottom:5px}
-.atit{font-size:clamp(1.3rem,4vw,1.6rem);font-weight:800;text-align:center;
-  letter-spacing:-.03em;margin-bottom:4px;color:var(--tx);transition:color var(--td) var(--eo)}
+@keyframes linep{0%,100%{opacity:.24;transform:scaleX(.34)}50%{opacity:1;transform:scaleX(1)}}
+.alogo{font-size:1.6rem;text-align:center;margin-bottom:5px}
+.atit{font-size:clamp(1.25rem,3.6vw,1.52rem);font-weight:800;text-align:center;
+  letter-spacing:-.03em;margin-bottom:4px;color:var(--tx);transition:color var(--t) var(--eo)}
 .asub{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);
-  text-align:center;line-height:1.7;margin-bottom:20px;transition:color var(--td) var(--eo)}
-.gsi{
-  width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
+  text-align:center;line-height:1.7;margin-bottom:18px;transition:color var(--t) var(--eo)}
+/* Google button */
+.gsi{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;
   padding:10px 16px;background:var(--s2);border:1px solid var(--bd2);border-radius:9px;
   font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--tx);
-  transition:background .13s,border-color .13s,transform 65ms var(--esp);
-}
+  transition:background .12s,border-color .12s,transform 60ms var(--esp)}
 .gsi:hover{background:var(--s3);transform:translateY(-2px)}
-.gsi:active{transform:scale(.97)}
+.gsi:active{transform:scale(.96)}
 .gsvg{width:18px;height:18px;flex-shrink:0}
-.divdr{display:flex;align-items:center;gap:11px;margin:13px 0;
+/* PP icon in PayPal button */
+.pp-icon{font-size:16px}
+.divdr{display:flex;align-items:center;gap:10px;margin:12px 0;
   font-family:'Space Mono',monospace;font-size:11px;color:var(--mu2)}
 .divdr::before,.divdr::after{content:'';flex:1;height:1px;background:var(--bd)}
 .fld{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
-.fld label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--mu);transition:color var(--td) var(--eo)}
-.fld input{
-  background:var(--inp);border:1px solid var(--bd);border-radius:8px;
+.fld label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mu);transition:color var(--t) var(--eo)}
+.fld input{background:var(--inp);border:1px solid var(--bd);border-radius:8px;
   padding:10px 12px;color:var(--tx);font-family:'Space Mono',monospace;font-size:13px;
   width:100%;outline:none;-webkit-appearance:none;
-  transition:border-color .13s,box-shadow .13s,background var(--td),color var(--td);
-}
-.fld input:focus{border-color:rgba(191,127,255,.48);box-shadow:0 0 0 3px rgba(191,127,255,.12)}
+  transition:border-color .12s,box-shadow .12s,background var(--t),color var(--t)}
+.fld input:focus{border-color:rgba(178,102,255,.44);box-shadow:0 0 0 3px rgba(178,102,255,.10)}
 .fld input::placeholder{color:var(--mu2)}
-.fld input.err{border-color:rgba(255,82,82,.48)}
 .ferr{font-family:'Space Mono',monospace;font-size:10px;color:var(--a2);
-  margin-top:3px;display:none}
+  margin-top:3px;display:none;padding:0 2px}
 .ferr.v{display:block}
 .asw{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);
-  text-align:center;margin-top:12px;transition:color var(--td) var(--eo)}
-.asw a{color:var(--a3);text-decoration:none;font-weight:700}
-/* strength bar */
-.sw{display:none;margin-top:5px}.sw.v{display:block}
+  text-align:center;margin-top:12px;transition:color var(--t) var(--eo)}
+.asw a{color:var(--a3);font-weight:700}
+/* pw strength */
+.sw{display:none;margin-top:4px}.sw.v{display:block}
 .swbar{height:3px;border-radius:3px;background:var(--bd);overflow:hidden}
-.swfill{height:100%;border-radius:3px;transition:width .26s var(--eo),background .26s}
+.swfill{height:100%;border-radius:3px;transition:width .24s var(--eo),background .24s}
 .swlbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--mu);margin-top:3px}
 
-/* ═══════════════════════════════════════════
-   DASHBOARD
-═══════════════════════════════════════════ */
-.dw{position:relative;z-index:2;width:100%;max-width:800px;margin:0 auto;
-  padding:clamp(18px,4vw,38px) clamp(16px,5vw,40px) clamp(52px,8vw,68px)}
-.sg{opacity:0;transform:translate3d(0,12px,0);
-  transition:opacity .26s var(--eo),transform .26s var(--eo)}
+/* ═══════════════════ DASHBOARD ═══════════════════ */
+.dw{position:relative;z-index:2;width:100%;max-width:760px;margin:0 auto;
+  padding:clamp(16px,3.6vw,34px) clamp(14px,5vw,40px) clamp(48px,7vw,64px)}
+.sg{opacity:0;transform:translate3d(0,11px,0);
+  transition:opacity .23s var(--eo),transform .23s var(--eo)}
 .page.active .sg{opacity:1;transform:translate3d(0,0,0)}
-.page.active .d1{transition-delay:.05s}
-.page.active .d2{transition-delay:.11s}
-.page.active .d3{transition-delay:.17s}
-.page.active .d4{transition-delay:.23s}
-.page.active .d5{transition-delay:.29s}
-.dh{display:flex;align-items:center;gap:13px;margin-bottom:20px;
-  padding-bottom:20px;border-bottom:1px solid var(--bd);flex-wrap:wrap;
-  transition:border-color var(--td) var(--eo)}
-.dav{width:48px;height:48px;border-radius:50%;flex-shrink:0;
+.page.active .d1{transition-delay:.05s}.page.active .d2{transition-delay:.10s}
+.page.active .d3{transition-delay:.15s}.page.active .d4{transition-delay:.20s}
+.dh{display:flex;align-items:center;gap:12px;margin-bottom:18px;
+  padding-bottom:18px;border-bottom:1px solid var(--bd);flex-wrap:wrap;
+  transition:border-color var(--t) var(--eo)}
+.dav{width:44px;height:44px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--a3),var(--a1));
   display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:800;color:#04040b;overflow:hidden}
+  font-size:16px;font-weight:800;color:#050510;overflow:hidden}
 .dav img{width:100%;height:100%;object-fit:cover}
-.dname{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;color:var(--tx);transition:color var(--td) var(--eo)}
-.deml{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);margin-top:2px;transition:color var(--td) var(--eo)}
-/* section card */
-.sc{background:var(--s1);border:1px solid var(--bd);border-radius:16px;
-  padding:clamp(15px,2.8vw,22px);margin-bottom:14px;
-  contain:layout style;
-  transition:background var(--td) var(--eo),border-color var(--td) var(--eo)}
-.schdr{display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:13px;flex-wrap:wrap;gap:7px}
-.sctit{font-size:.9rem;font-weight:800;color:var(--tx);transition:color var(--td) var(--eo)}
-.sbdg{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;
-  border-radius:100px;font-family:'Space Mono',monospace;font-size:9px;
-  letter-spacing:.09em;text-transform:uppercase}
-.sa{background:rgba(93,255,200,.10);border:1px solid rgba(93,255,200,.24);color:var(--a1)}
-.si{background:rgba(255,82,82,.10);border:1px solid rgba(255,82,82,.24);color:var(--a2)}
-.se{background:rgba(255,165,0,.10);border:1px solid rgba(255,165,0,.24);color:#ffa500}
+.dname{font-size:1.06rem;font-weight:800;letter-spacing:-.02em;color:var(--tx);transition:color var(--t) var(--eo)}
+.deml{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);margin-top:2px;transition:color var(--t) var(--eo)}
+.sc{background:var(--s1);border:1px solid var(--bd);border-radius:14px;
+  padding:clamp(13px,2.5vw,20px);margin-bottom:12px;
+  transition:background var(--t) var(--eo),border-color var(--t) var(--eo)}
+/* Light mode: premium card */
+[data-theme=light] .sc{box-shadow:0 2px 14px rgba(80,60,160,.07)}
+.schdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;flex-wrap:wrap;gap:6px}
+.sctit{font-size:.87rem;font-weight:800;color:var(--tx);transition:color var(--t) var(--eo)}
+.sbdg{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;
+  border-radius:100px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
+.sa{background:rgba(77,255,192,.10);border:1px solid rgba(77,255,192,.20);color:var(--a1)}
+.si{background:rgba(255,77,77,.10);border:1px solid rgba(255,77,77,.20);color:var(--a2)}
+.se{background:rgba(255,165,0,.10);border:1px solid rgba(255,165,0,.20);color:#ffa500}
 .sbdot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.8s ease-in-out infinite}
-.sgrd{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
-.sst{background:var(--s2);border:1px solid var(--bd);border-radius:9px;
-  padding:10px 12px;transition:background var(--td),border-color var(--td)}
-.sstl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--mu);margin-bottom:3px;display:block;transition:color var(--td)}
-.sstv{font-size:.9rem;font-weight:700;color:var(--tx);transition:color var(--td)}
-/* progress */
-.pb{margin-bottom:12px}
-.pbl{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);
-  margin-bottom:4px;display:flex;justify-content:space-between;transition:color var(--td)}
-.pbbar{height:4px;background:var(--bd);border-radius:4px;overflow:hidden;transition:background var(--td)}
-.pbf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--a1),var(--a3));transition:width .9s var(--eo)}
-/* key box */
-.kbox{background:var(--s2);border:2px solid rgba(93,255,200,.20);border-radius:10px;
-  padding:14px;margin-top:10px;transition:background var(--td),border-color var(--td)}
-.kbox.used{border-color:rgba(255,82,82,.20);opacity:.7}
-.kbox.expired{border-color:rgba(255,165,0,.20);opacity:.7}
-.klbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--a1);margin-bottom:6px;display:flex;
-  align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
-.kval{
-  font-family:'Space Mono',monospace;font-size:clamp(13px,2.2vw,16px);
+.sgrd{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;margin-bottom:11px}
+.sst{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:9px 10px;transition:background var(--t),border-color var(--t)}
+.sstl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.11em;text-transform:uppercase;color:var(--mu);margin-bottom:3px;display:block;transition:color var(--t)}
+.sstv{font-size:.86rem;font-weight:700;color:var(--tx);transition:color var(--t)}
+.pb{margin-bottom:10px}
+.pbl{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);margin-bottom:3px;display:flex;justify-content:space-between;transition:color var(--t)}
+.pbbar{height:4px;background:var(--bd);border-radius:4px;overflow:hidden;transition:background var(--t)}
+.pbf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--a1),var(--a3));transition:width .82s var(--eo)}
+/* Key box */
+.kbox{background:var(--s2);border:2px solid rgba(77,255,192,.18);border-radius:9px;
+  padding:12px;margin-top:9px;transition:background var(--t),border-color var(--t)}
+.kbox.kexp{border-color:rgba(255,165,0,.18);opacity:.70}
+.kbox.kdis{border-color:rgba(255,77,77,.18);opacity:.62}
+.klbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--a1);margin-bottom:5px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.kval{font-family:'Space Mono',monospace;font-size:clamp(14px,2vw,17px);
   font-weight:700;color:var(--tx);letter-spacing:.14em;word-break:break-all;
-  line-height:1.5;transition:color var(--td);
-  /* Monospace so columns align perfectly */
-}
-.krow{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
-.kcopy{
-  display:inline-flex;align-items:center;gap:5px;
-  font-family:'Space Mono',monospace;font-size:11px;color:var(--a1);
-  background:rgba(93,255,200,.08);border:1px solid rgba(93,255,200,.20);
-  border-radius:7px;padding:5px 10px;
-  transition:background .12s,transform 65ms var(--esp);
-}
-.kcopy:hover{background:rgba(93,255,200,.14)}
-.kcopy:active{transform:scale(.94)}
-.kdl{
-  display:inline-flex;align-items:center;gap:5px;
-  font-family:'Space Mono',monospace;font-size:11px;color:var(--a3);
-  background:rgba(191,127,255,.08);border:1px solid rgba(191,127,255,.20);
-  border-radius:7px;padding:5px 10px;text-decoration:none;
-  transition:background .12s,transform 65ms var(--esp);
-}
-.kdl:hover{background:rgba(191,127,255,.14)}
-.kdl:active{transform:scale(.94)}
-/* notice */
-.nt{border-radius:10px;padding:11px 14px;display:flex;align-items:flex-start;gap:9px;
-  margin-top:10px;transition:background var(--td),border-color var(--td)}
-.ntx{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);line-height:1.7;transition:color var(--td)}
-.ntx strong{color:var(--tx);display:block;margin-bottom:2px;font-size:12px;transition:color var(--td)}
-.ni-c{background:rgba(93,255,200,.06);border:1px solid rgba(93,255,200,.15)}
-.ni-c .ntx strong{color:var(--a1)}
-.nw-c{background:rgba(255,82,82,.06);border:1px solid rgba(255,82,82,.15)}
-.nw-c .ntx strong{color:var(--a2)}
-.np-c{background:rgba(191,127,255,.06);border:1px solid rgba(191,127,255,.15)}
-.np-c .ntx strong{color:var(--a3)}
-.ctr{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-@media(max-width:380px){.ctr{flex-direction:column}.ctr .btn{justify-content:center;width:100%}}
+  line-height:1.5;transition:color var(--t)}
+.krow{display:flex;align-items:center;gap:7px;margin-top:7px;flex-wrap:wrap}
+.kcopy,.kdl{display:inline-flex;align-items:center;gap:5px;
+  font-family:'Space Mono',monospace;font-size:11px;padding:5px 9px;
+  border-radius:6px;transition:background .11s,transform 60ms var(--esp)}
+.kcopy{color:var(--a1);background:rgba(77,255,192,.08);border:1px solid rgba(77,255,192,.17)}
+.kcopy:hover{background:rgba(77,255,192,.14)}
+.kdl{color:var(--a3);background:rgba(178,102,255,.08);border:1px solid rgba(178,102,255,.17)}
+.kdl:hover{background:rgba(178,102,255,.14)}
+.kcopy:active,.kdl:active{transform:scale(.92)}
+.nt{border-radius:9px;padding:10px 13px;display:flex;align-items:flex-start;gap:8px;
+  margin-top:9px;transition:background var(--t),border-color var(--t)}
+.ntx{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);line-height:1.7;transition:color var(--t)}
+.ntx strong{color:var(--tx);display:block;margin-bottom:2px;font-size:12px;transition:color var(--t)}
+.nc{background:rgba(77,255,192,.06);border:1px solid rgba(77,255,192,.13)}.nc .ntx strong{color:var(--a1)}
+.np{background:rgba(178,102,255,.06);border:1px solid rgba(178,102,255,.13)}.np .ntx strong{color:var(--a3)}
+.ctr{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+@media(max-width:360px){.ctr{flex-direction:column}.ctr .btn{justify-content:center;width:100%}}
 
-/* ═══════════════════════════════════════════
-   CODE BLOCK
-═══════════════════════════════════════════ */
-.cblk{background:var(--s2);border:1px solid var(--bd);border-radius:10px;
-  padding:13px;overflow-x:auto;margin-top:10px;
-  transition:background var(--td),border-color var(--td)}
-.cblk pre{font-family:'Space Mono',monospace;font-size:11px;
-  color:var(--tx);line-height:1.68;white-space:pre;tab-size:2;
-  transition:color var(--td)}
-.clbl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--a3);margin-bottom:7px;display:block}
-
-/* ═══════════════════════════════════════════
-   INNER PAGES
-═══════════════════════════════════════════ */
-.ip{
-  padding:clamp(18px,3.8vw,38px) clamp(16px,5vw,40px) clamp(52px,8vw,68px);
-  width:100%;max-width:840px;margin:0 auto;
-}
-.iph{
-  display:flex;align-items:flex-start;gap:clamp(12px,2.8vw,22px);
-  margin-bottom:clamp(24px,4vw,38px);padding-bottom:clamp(18px,3.2vw,26px);
-  border-bottom:1px solid var(--bd);flex-wrap:wrap;
-  transition:border-color var(--td) var(--eo);
-}
-.ipico{
-  width:clamp(48px,7.5vw,66px);height:clamp(48px,7.5vw,66px);
-  font-size:clamp(21px,3.8vw,29px);border-radius:14px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.page.active .ipico{animation:ipop .46s var(--esp) .11s both}
-@keyframes ipop{from{transform:scale(.4) rotate(-16deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-.ii1{background:rgba(93,255,200,.10);border:1px solid rgba(93,255,200,.22)}
-.ii2{background:rgba(255,82,82,.10);border:1px solid rgba(255,82,82,.22)}
-.ii3{background:rgba(191,127,255,.10);border:1px solid rgba(191,127,255,.22)}
-.ipm{flex:1;min-width:200px}
-.iptag{font-family:'Space Mono',monospace;font-size:clamp(9px,1vw,10px);
-  letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;display:block}
-.it1{color:var(--a1)}.it2{color:var(--a2)}.it3{color:var(--a3)}
-.iptit{font-size:clamp(1.65rem,4.8vw,2.7rem);font-weight:800;letter-spacing:-.03em;
-  line-height:1;margin-bottom:10px;color:var(--tx);transition:color var(--td) var(--eo)}
-.ipsub{font-family:'Space Mono',monospace;font-size:clamp(11px,1.3vw,12px);
-  color:var(--mu);line-height:1.85;max-width:480px;transition:color var(--td) var(--eo)}
-.vbg{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:100px;
-  font-family:'Space Mono',monospace;font-size:clamp(9px,1vw,10px);letter-spacing:.09em;margin-top:11px}
-.vb1{background:rgba(93,255,200,.08);border:1px solid rgba(93,255,200,.21);color:var(--a1)}
-.vb2{background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.21);color:var(--a2)}
-.vb3{background:rgba(191,127,255,.08);border:1px solid rgba(191,127,255,.21);color:var(--a3)}
+/* ═══════════════════ INNER PAGES ═══════════════════ */
+.ip{padding:clamp(16px,3.4vw,34px) clamp(14px,5vw,40px) clamp(48px,7vw,64px);
+  width:100%;max-width:800px;margin:0 auto}
+.iph{display:flex;align-items:flex-start;gap:clamp(11px,2.5vw,20px);
+  margin-bottom:clamp(20px,3.6vw,34px);padding-bottom:clamp(16px,2.8vw,24px);
+  border-bottom:1px solid var(--bd);flex-wrap:wrap;transition:border-color var(--t) var(--eo)}
+.ipico{width:clamp(44px,6.5vw,62px);height:clamp(44px,6.5vw,62px);
+  font-size:clamp(19px,3.4vw,27px);border-radius:13px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.page.active .ipico{animation:ipop .44s var(--esp) .10s both}
+@keyframes ipop{from{transform:scale(.38) rotate(-16deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.ii1{background:rgba(77,255,192,.10);border:1px solid rgba(77,255,192,.20)}
+.ii2{background:rgba(255,77,77,.10);border:1px solid rgba(255,77,77,.20)}
+.ii3{background:rgba(178,102,255,.10);border:1px solid rgba(178,102,255,.20)}
+.ii4{background:rgba(255,180,77,.10);border:1px solid rgba(255,180,77,.20)}
+.ipm{flex:1;min-width:190px}
+.iptag{font-family:'Space Mono',monospace;font-size:clamp(9px,.92vw,10px);letter-spacing:.13em;text-transform:uppercase;margin-bottom:7px;display:block}
+.it1{color:var(--a1)}.it2{color:var(--a2)}.it3{color:var(--a3)}.it4{color:#ffb44d}
+.iptit{font-size:clamp(1.6rem,4.4vw,2.6rem);font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:9px;color:var(--tx);transition:color var(--t) var(--eo)}
+.ipsub{font-family:'Space Mono',monospace;font-size:clamp(11px,1.2vw,12px);color:var(--mu);line-height:1.85;max-width:460px;transition:color var(--t) var(--eo)}
+.vbg{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:100px;font-family:'Space Mono',monospace;font-size:clamp(9px,.92vw,10px);letter-spacing:.08em;margin-top:10px}
+.vb1{background:rgba(77,255,192,.08);border:1px solid rgba(77,255,192,.19);color:var(--a1)}
+.vb2{background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.19);color:var(--a2)}
+.vb3{background:rgba(178,102,255,.08);border:1px solid rgba(178,102,255,.19);color:var(--a3)}
+.vb4{background:rgba(255,180,77,.08);border:1px solid rgba(255,180,77,.19);color:#ffb44d}
 .vd{width:5px;height:5px;border-radius:50%;flex-shrink:0;animation:blink 2s ease-in-out infinite}
-.vd1{background:var(--a1)}.vd2{background:var(--a2)}.vd3{background:var(--a3)}
-.igr{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(7px,1.3vw,11px);margin-bottom:clamp(18px,3.2vw,26px)}
-@media(max-width:600px){.igr{grid-template-columns:repeat(2,1fr)}}
-.ic{background:var(--s1);border:1px solid var(--bd);border-radius:10px;
-  padding:clamp(10px,1.9vw,15px) clamp(10px,1.9vw,17px);
-  transition:border-color .16s,background var(--td),transform .16s var(--esp)}
-.ic:hover{border-color:rgba(255,255,255,.12);background:var(--s2);transform:translate3d(0,-2px,0)}
-.icl{font-family:'Space Mono',monospace;font-size:clamp(8px,.85vw,9px);letter-spacing:.13em;
-  text-transform:uppercase;color:var(--mu);margin-bottom:4px;display:block;transition:color var(--td)}
-.icv{font-size:clamp(.88rem,1.7vw,.96rem);font-weight:700;color:var(--tx);transition:color var(--td)}
-.stit{font-size:clamp(9px,1vw,10px);font-family:'Space Mono',monospace;letter-spacing:.19em;
-  text-transform:uppercase;color:var(--mu);margin-bottom:clamp(10px,1.9vw,15px);
-  display:flex;align-items:center;gap:10px;transition:color var(--td)}
-.stit::after{content:'';flex:1;height:1px;background:var(--bd);transition:background var(--td)}
-.cgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(105px,15vw,138px),1fr));
-  gap:clamp(6px,1.1vw,8px);margin-bottom:clamp(18px,3.2vw,26px)}
-.ci{background:var(--s1);border:1px solid var(--bd);border-radius:9px;
-  padding:clamp(9px,1.5vw,11px) clamp(10px,1.6vw,13px);
-  display:flex;align-items:center;gap:7px;
-  transition:border-color .16s,transform .16s var(--esp),background var(--td)}
-.ci:hover{border-color:rgba(93,255,200,.26);transform:translate3d(0,-2px,0);background:var(--s2)}
-.cdot{width:6px;height:6px;background:var(--a1);border-radius:50%;flex-shrink:0;box-shadow:0 0 6px var(--a1)}
-.cn{font-size:clamp(10px,1.1vw,11px);font-weight:700;color:var(--tx);transition:color var(--td)}
-.fl{display:flex;flex-direction:column;gap:clamp(6px,1.1vw,8px);margin-bottom:clamp(18px,3.2vw,26px)}
-.fi{display:flex;align-items:flex-start;gap:clamp(9px,1.7vw,11px);
-  background:var(--s1);border:1px solid var(--bd);border-radius:11px;
-  padding:clamp(11px,2vw,14px) clamp(11px,2vw,16px);
-  transition:border-color .16s,transform .16s,background var(--td)}
-@media(pointer:fine){.fi:hover{border-color:rgba(255,255,255,.09);transform:translate3d(4px,0,0);background:var(--s2)}}
-.fck{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;
-  justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
-.fk1{background:rgba(93,255,200,.12);color:var(--a1)}
-.fk2{background:rgba(255,82,82,.12);color:var(--a2)}
-.fk3{background:rgba(191,127,255,.12);color:var(--a3)}
-.ftt{font-size:clamp(11px,1.3vw,12px);font-weight:700;color:var(--tx);margin-bottom:3px;transition:color var(--td)}
-.fds{font-family:'Space Mono',monospace;font-size:clamp(10px,1vw,11px);color:var(--mu);line-height:1.64;transition:color var(--td)}
-.nb{border-radius:10px;padding:clamp(11px,2vw,14px) clamp(11px,2vw,16px);
-  display:flex;align-items:flex-start;gap:clamp(9px,1.4vw,11px);margin-bottom:clamp(13px,2.4vw,19px)}
-.nb-ico{font-size:clamp(13px,2.2vw,16px);flex-shrink:0;margin-top:1px}
-.nb-txt{font-family:'Space Mono',monospace;font-size:clamp(10px,1.1vw,11px);color:var(--mu);line-height:1.75;transition:color var(--td)}
-.nb-txt strong{font-size:clamp(11px,1.3vw,12px);display:block;margin-bottom:3px;transition:color var(--td)}
-.nw2{background:rgba(255,82,82,.05);border:1px solid rgba(255,82,82,.15)}.nw2 .nb-txt strong{color:var(--a2)}
-.np2{background:rgba(191,127,255,.05);border:1px solid rgba(191,127,255,.15)}.np2 .nb-txt strong{color:var(--a3)}
-.osb{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:clamp(15px,2.4vw,19px)}
-.osg{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;
-  background:rgba(255,82,82,.06);border:1px solid rgba(255,82,82,.16);border-radius:100px;
-  font-family:'Space Mono',monospace;font-size:clamp(10px,1.1vw,11px);color:var(--a2)}
+.vd1{background:var(--a1)}.vd2{background:var(--a2)}.vd3{background:var(--a3)}.vd4{background:#ffb44d}
+.igr{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(6px,1.2vw,10px);margin-bottom:clamp(16px,2.8vw,24px)}
+@media(max-width:560px){.igr{grid-template-columns:repeat(2,1fr)}}
+.ic{background:var(--s1);border:1px solid var(--bd);border-radius:9px;padding:clamp(9px,1.7vw,14px) clamp(9px,1.7vw,15px);transition:border-color .14s,background var(--t),transform .14s var(--esp)}
+.ic:hover{border-color:rgba(255,255,255,.10);background:var(--s2);transform:translate3d(0,-2px,0)}
+.icl{font-family:'Space Mono',monospace;font-size:clamp(8px,.8vw,9px);letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-bottom:3px;display:block;transition:color var(--t)}
+.icv{font-size:clamp(.84rem,1.6vw,.92rem);font-weight:700;color:var(--tx);transition:color var(--t)}
+.stit{font-size:clamp(9px,.92vw,10px);font-family:'Space Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--mu);margin-bottom:clamp(10px,1.7vw,14px);display:flex;align-items:center;gap:9px;transition:color var(--t)}
+.stit::after{content:'';flex:1;height:1px;background:var(--bd);transition:background var(--t)}
+.cgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(100px,13.5vw,130px),1fr));gap:clamp(6px,1vw,8px);margin-bottom:clamp(16px,2.8vw,24px)}
+.ci{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:clamp(8px,1.4vw,11px) clamp(9px,1.5vw,12px);display:flex;align-items:center;gap:7px;transition:border-color .14s,transform .14s var(--esp),background var(--t)}
+.ci:hover{border-color:rgba(77,255,192,.22);transform:translate3d(0,-2px,0);background:var(--s2)}
+.cdot{width:6px;height:6px;background:var(--a1);border-radius:50%;flex-shrink:0;box-shadow:0 0 5px var(--a1)}
+.cn{font-size:clamp(10px,1vw,11px);font-weight:700;color:var(--tx);transition:color var(--t)}
+.fl{display:flex;flex-direction:column;gap:clamp(5px,1vw,8px);margin-bottom:clamp(16px,2.8vw,24px)}
+.fi{display:flex;align-items:flex-start;gap:clamp(8px,1.5vw,11px);background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:clamp(10px,1.8vw,14px) clamp(10px,1.8vw,14px);transition:border-color .14s,transform .14s,background var(--t)}
+@media(pointer:fine){.fi:hover{border-color:rgba(255,255,255,.08);transform:translate3d(4px,0,0);background:var(--s2)}}
+.fck{width:19px;height:19px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
+.fk1{background:rgba(77,255,192,.11);color:var(--a1)}.fk2{background:rgba(255,77,77,.11);color:var(--a2)}.fk3{background:rgba(178,102,255,.11);color:var(--a3)}.fk4{background:rgba(255,180,77,.11);color:#ffb44d}
+.ftt{font-size:clamp(11px,1.2vw,12px);font-weight:700;color:var(--tx);margin-bottom:2px;transition:color var(--t)}
+.fds{font-family:'Space Mono',monospace;font-size:clamp(10px,.94vw,11px);color:var(--mu);line-height:1.64;transition:color var(--t)}
+.nb{border-radius:9px;padding:clamp(10px,1.8vw,13px) clamp(10px,1.8vw,14px);display:flex;align-items:flex-start;gap:clamp(8px,1.3vw,11px);margin-bottom:clamp(11px,2.2vw,17px)}
+.nb-ico{font-size:clamp(13px,2vw,15px);flex-shrink:0;margin-top:1px}
+.nb-txt{font-family:'Space Mono',monospace;font-size:clamp(10px,1vw,11px);color:var(--mu);line-height:1.75;transition:color var(--t)}
+.nb-txt strong{font-size:clamp(11px,1.2vw,12px);display:block;margin-bottom:3px;transition:color var(--t)}
+.nw2{background:rgba(255,77,77,.05);border:1px solid rgba(255,77,77,.13)}.nw2 .nb-txt strong{color:var(--a2)}
+.np2{background:rgba(178,102,255,.05);border:1px solid rgba(178,102,255,.13)}.np2 .nb-txt strong{color:var(--a3)}
+.osb{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:clamp(13px,2.2vw,17px)}
+.osg{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,77,77,.06);border:1px solid rgba(255,77,77,.14);border-radius:100px;font-family:'Space Mono',monospace;font-size:clamp(10px,1vw,11px);color:var(--a2)}
 
-/* ═══════════════════════════════════════════
-   PAYMENT MODAL (no embedded iframe, just confirmation)
-═══════════════════════════════════════════ */
-.mover{
-  position:fixed;inset:0;background:rgba(0,0,0,.88);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  z-index:500;display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .24s var(--eo);
-  padding:clamp(12px,4vw,20px);
-}
+/* ═══════════════════ MODAL ═══════════════════ */
+.mover{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s var(--eo);padding:clamp(12px,3.5vw,20px)}
 .mover.open{opacity:1;pointer-events:all}
-.modal{
-  background:var(--s2);border:1px solid rgba(191,127,255,.24);
-  border-radius:clamp(14px,2.8vw,20px);padding:clamp(20px,4.2vw,32px);
-  max-width:420px;width:100%;
-  transform:scale(.84) translate3d(0,18px,0);
-  transition:transform .36s var(--esp),background var(--td);
-  position:relative;overflow:hidden;
-  max-height:calc(100dvh - 20px);overflow-y:auto;
-}
+.modal{background:var(--s2);border:1px solid rgba(178,102,255,.20);border-radius:clamp(14px,2.5vw,18px);padding:clamp(18px,3.8vw,28px);max-width:400px;width:100%;transform:scale(.82) translate3d(0,16px,0);transition:transform .32s var(--esp),background var(--t);position:relative;overflow:hidden;max-height:calc(100dvh - 16px);overflow-y:auto}
 .mover.open .modal{transform:scale(1) translate3d(0,0,0)}
-.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--a3),transparent);
-  animation:linep 2.5s ease-in-out infinite}
-.mcl{position:absolute;top:11px;right:11px;background:rgba(255,255,255,.06);border:none;
-  color:var(--mu);width:27px;height:27px;border-radius:7px;
-  display:flex;align-items:center;justify-content:center;font-size:14px;
-  transition:background .12s,color .12s,transform 65ms var(--esp)}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--a3),transparent);animation:linep 2.5s ease-in-out infinite}
+.mcl{position:absolute;top:11px;right:11px;background:rgba(255,255,255,.06);color:var(--mu);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;transition:background .10s,color .10s,transform 60ms var(--esp)}
 .mcl:hover{background:rgba(255,255,255,.11);color:var(--tx)}.mcl:active{transform:scale(.86)}
-.mico{font-size:38px;display:block;text-align:center;margin-bottom:10px}
-.mover.open .mico{animation:ipop .4s var(--esp) .06s both}
-.mtit{font-size:clamp(1.15rem,3.2vw,1.4rem);font-weight:800;text-align:center;
-  margin-bottom:5px;letter-spacing:-.02em;color:var(--tx);transition:color var(--td)}
-.msub{font-family:'Space Mono',monospace;font-size:clamp(10px,1.1vw,11px);color:var(--mu);
-  text-align:center;line-height:1.8;margin-bottom:15px;transition:color var(--td)}
-/* Plans */
-.planrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:15px}
-@media(max-width:350px){.planrow{grid-template-columns:1fr}}
-.plan{border:2px solid var(--bd);border-radius:11px;
-  padding:clamp(11px,2.1vw,14px) clamp(10px,1.8vw,13px);text-align:center;
-  position:relative;overflow:hidden;
-  transition:border-color .13s,background .13s,transform 65ms var(--esp)}
-.plan:active{transform:scale(.94)}
-.plan.sel{border-color:var(--a3);background:rgba(191,127,255,.11)}
-.plan.sel::after{content:'\2713';position:absolute;top:5px;left:5px;
-  width:15px;height:15px;background:var(--a3);border-radius:50%;
-  font-size:9px;color:#fff;font-weight:700;display:flex;align-items:center;
-  justify-content:center;line-height:15px;animation:popIn .18s var(--esp) both}
+.mico{font-size:34px;display:block;text-align:center;margin-bottom:9px}
+.mover.open .mico{animation:ipop .38s var(--esp) .05s both}
+.mtit{font-size:clamp(1.1rem,2.9vw,1.35rem);font-weight:800;text-align:center;margin-bottom:4px;letter-spacing:-.02em;color:var(--tx);transition:color var(--t)}
+.msub{font-family:'Space Mono',monospace;font-size:clamp(10px,1vw,11px);color:var(--mu);text-align:center;line-height:1.8;margin-bottom:13px;transition:color var(--t)}
+.planrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:13px}
+@media(max-width:340px){.planrow{grid-template-columns:1fr}}
+.plan{border:2px solid var(--bd);border-radius:10px;padding:clamp(10px,1.9vw,13px) clamp(9px,1.6vw,11px);text-align:center;position:relative;overflow:hidden;transition:border-color .12s,background .12s,transform 60ms var(--esp)}
+.plan:active{transform:scale(.93)}
+.plan.sel{border-color:var(--a3);background:rgba(178,102,255,.10)}
+.plan.sel::after{content:'\2713';position:absolute;top:5px;left:5px;width:14px;height:14px;background:var(--a3);border-radius:50%;font-size:9px;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:14px;animation:popIn .17s var(--esp) both}
 @keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
-.pbg{position:absolute;top:5px;right:5px;background:var(--a3);color:#fff;font-size:9px;
-  font-family:'Space Mono',monospace;padding:2px 6px;border-radius:100px;letter-spacing:.04em}
-.pnm{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--mu);margin-bottom:6px;transition:color var(--td)}
-.ppr{font-size:clamp(1.15rem,2.8vw,1.4rem);font-weight:800;color:var(--tx);margin-bottom:2px;transition:color var(--td)}
-.ppe{font-size:10px;color:var(--mu);font-family:'Space Mono',monospace;transition:color var(--td)}
+.pbg2{position:absolute;top:5px;right:5px;background:var(--a3);color:#fff;font-size:8px;font-family:'Space Mono',monospace;padding:2px 5px;border-radius:100px;letter-spacing:.04em}
+.pnm{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:.10em;text-transform:uppercase;color:var(--mu);margin-bottom:5px;transition:color var(--t)}
+.ppr{font-size:clamp(1.1rem,2.6vw,1.32rem);font-weight:800;color:var(--tx);margin-bottom:2px;transition:color var(--t)}
+.ppe{font-size:10px;color:var(--mu);font-family:'Space Mono',monospace;transition:color var(--t)}
 .psv{font-size:9px;color:var(--a3);font-family:'Space Mono',monospace;margin-top:3px;font-weight:700}
-/* PayPal button area */
-#pp-btn-wrap{min-height:40px;margin-top:4px}
-.ppnote{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu2);
-  text-align:center;margin-top:8px;line-height:1.5;transition:color var(--td)}
-/* Processing overlay inside modal */
-.pp-processing{display:none;text-align:center;padding:16px 0}
-.pp-processing.v{display:block}
-.pp-processing p{font-family:'Space Mono',monospace;font-size:12px;color:var(--mu);margin-top:10px}
+#pp-btn-wrap{min-height:36px;margin-top:4px}
+.pp-proc{display:none;text-align:center;padding:13px 0}
+.pp-proc.v{display:block}
+.pp-proc p{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);margin-top:8px}
+.ppnote{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu2);text-align:center;margin-top:7px;line-height:1.5;transition:color var(--t)}
 
-/* ═══════════════════════════════════════════
-   RATE LIMIT + ANTI-DDOS OVERLAY
-═══════════════════════════════════════════ */
-.rl{position:fixed;inset:0;background:rgba(0,0,0,.96);backdrop-filter:blur(24px);
-  z-index:9000;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:13px;opacity:0;pointer-events:none;transition:opacity .22s var(--eo)}
+/* ═══════════════════ RATE LIMIT ═══════════════════ */
+.rl{position:fixed;inset:0;background:rgba(0,0,0,.97);backdrop-filter:blur(22px);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;opacity:0;pointer-events:none;transition:opacity .20s var(--eo)}
 .rl.v{opacity:1;pointer-events:all}
-.rl-ico{font-size:46px}
-.rl-tit{font-size:1.25rem;font-weight:800;color:var(--a2);letter-spacing:-.02em}
-.rl-msg{font-family:'Space Mono',monospace;font-size:12px;color:var(--mu);
-  text-align:center;max-width:300px;line-height:1.7}
-.rl-t{font-size:1.8rem;font-weight:800;font-family:'Space Mono',monospace;color:var(--tx);letter-spacing:.1em}
+.rl-ico{font-size:42px}
+.rl-tit{font-size:1.2rem;font-weight:800;color:var(--a2);letter-spacing:-.02em}
+.rl-msg{font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);text-align:center;max-width:280px;line-height:1.7}
+.rl-t{font-size:1.7rem;font-weight:800;font-family:'Space Mono',monospace;color:var(--tx);letter-spacing:.1em;min-width:3ch;text-align:center}
 
-/* ═══════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════ */
-.toast{
-  position:fixed;bottom:18px;left:50%;
-  transform:translateX(-50%) translateY(64px);z-index:800;
-  background:var(--s1);border:1px solid var(--bd);border-radius:10px;
-  padding:9px 16px;font-family:'Space Mono',monospace;font-size:12px;color:var(--tx);
-  display:flex;align-items:center;gap:7px;
-  box-shadow:0 8px 28px rgba(0,0,0,.26);
-  transition:transform .28s var(--esp),opacity .22s var(--eo),background var(--td),color var(--td);
-  opacity:0;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 24px);
-}
+/* ═══════════════════ TOAST ═══════════════════ */
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(58px);z-index:800;background:var(--s1);border:1px solid var(--bd);border-radius:9px;padding:9px 14px;font-family:'Space Mono',monospace;font-size:12px;color:var(--tx);display:flex;align-items:center;gap:7px;box-shadow:0 8px 24px rgba(0,0,0,.24);transition:transform .25s var(--esp),opacity .20s var(--eo),background var(--t),color var(--t),border-color var(--t);opacity:0;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 20px)}
 .toast.v{transform:translateX(-50%) translateY(0);opacity:1}
 
-/* ═══════════════════════════════════════════
-   SPINNER
-═══════════════════════════════════════════ */
-.sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.22);
-  border-top-color:#fff;border-radius:50%;animation:spin .55s linear infinite;flex-shrink:0}
+/* ═══════════════════ SPINNER ═══════════════════ */
+.sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.20);border-top-color:#fff;border-radius:50%;animation:spin .52s linear infinite;flex-shrink:0}
 
-/* ═══════════════════════════════════════════
-   UTILS
-═══════════════════════════════════════════ */
-@keyframes aUp{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+/* ═══════════════════ UTILS ═══════════════════ */
+@keyframes aUp{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(93,255,200,.15);border-radius:2px}
-/* ── Fluid responsive without breakpoint regressions ── */
-@media(max-width:460px){
-  .card{padding:15px 13px 16px}
-  .ip{padding:14px 11px 48px}
-  .fi{padding:10px 11px}
-  .ci{padding:8px 10px}
-  .modal{padding:16px}
-  .abox{padding:19px 14px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:rgba(77,255,192,.14);border-radius:2px}
+@media(max-width:440px){
+  .card{padding:13px 11px 14px}.ip{padding:12px 10px 44px}
+  .fi{padding:9px 10px}.ci{padding:7px 9px}.modal{padding:14px}.abox{padding:17px 12px}
 }
 button,a{touch-action:manipulation}
+button:focus-visible{outline:2px solid var(--a3);outline-offset:2px}
 </style>
 </head>
 <body>
 
-<!-- ══ CAPTCHA GATE ══ -->
+<!-- Stars -->
+<div class="stars" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<!-- Grid bg -->
+<div class="gbg"></div>
+
+<!-- Crescent Moon -->
+<div class="moon-wrap" aria-hidden="true">
+  <div class="moon">
+    <div class="moon-disc">
+      <span class="mc mc1"></span><span class="mc mc2"></span><span class="mc mc3"></span>
+    </div>
+    <div class="moon-cut"></div>
+  </div>
+  <div class="mst" style="top:-22px;left:-10px"></div>
+  <div class="mst" style="top:-12px;left:-34px;--d:3.2s;--dl:.7s"></div>
+  <div class="mst" style="top:5px;left:-44px;--d:2.5s;--dl:1.3s"></div>
+</div>
+
+<!-- Cursor -->
+<div id="cur"></div><div id="cring"></div>
+<!-- Toast -->
+<div class="toast" id="toast"><span id="ticon">✅</span><span id="tmsg">Done</span></div>
+<!-- Rate Limit -->
+<div class="rl" id="rl">
+  <div class="rl-ico">🚫</div>
+  <div class="rl-tit">Too Many Requests</div>
+  <div class="rl-msg">You've been temporarily blocked to protect against automated attacks.</div>
+  <div class="rl-t" id="rl-t">60</div>
+</div>
+
+<!-- ════════ CAPTCHA GATE ════════ -->
 <div id="gate">
-  <div class="gate-moon">🌙</div>
-  <div class="gate-title">GENX ECOSYSTEM</div>
-  <div class="gate-sub">Verifying you&rsquo;re human&hellip;</div>
-  <div class="gate-spinner" id="gate-spin"></div>
-  <div class="gate-fail" id="gate-fail">
-    <p>Verification failed. Please try again.</p>
+  <div class="g-ico">🌙</div>
+  <div class="g-ttl">GENX ECOSYSTEM</div>
+  <div class="g-sub">Verifying your browser&hellip;</div>
+  <div class="g-sp" id="gspin"></div>
+  <div class="g-fail" id="gfail">
+    <p>Verification failed. Please retry.</p>
     <button class="btn b3" onclick="runGate()">Retry</button>
   </div>
 </div>
 
-<!-- ══ BACKGROUND ══ -->
-<div class="gbg"></div>
-<div class="moon-wrap">
-  <div class="moon">
-    <div class="moon-disc">
-      <div class="moon-craters">
-        <span class="cr1"></span><span class="cr2"></span><span class="cr3"></span>
-      </div>
-    </div>
-    <div class="moon-shadow"></div>
-  </div>
-  <div class="moon-stars">
-    <div class="mst"></div><div class="mst"></div>
-    <div class="mst"></div><div class="mst"></div>
-  </div>
-</div>
-
-<!-- ══ CURSOR ══ -->
-<div id="cur"></div><div id="cring"></div>
-<!-- ══ TOAST ══ -->
-<div class="toast" id="toast"><span id="ticon">✅</span><span id="tmsg">Done</span></div>
-<!-- ══ RATE LIMIT ══ -->
-<div class="rl" id="rl">
-  <div class="rl-ico">🚫</div>
-  <div class="rl-tit">Too Many Requests</div>
-  <div class="rl-msg">You've been temporarily blocked. This protects against automated attacks.</div>
-  <div class="rl-t" id="rl-t">60</div>
-</div>
-
-<!-- ════════════════════════════════════════
-     PAYMENT MODAL
-════════════════════════════════════════ -->
+<!-- ════════ PAYMENT MODAL ════════ -->
 <div class="mover" id="mo">
   <div class="modal">
     <button class="mcl" onclick="closeMo()">✕</button>
     <span class="mico">🎬</span>
     <h2 class="mtit">Krypto Studio Premium</h2>
-    <p class="msub">Choose your plan. Pay via PayPal.<br>Your license key is generated instantly after payment.</p>
+    <p class="msub">Choose a plan. Pay via PayPal.<br>Your license key is generated instantly.</p>
     <div class="planrow">
       <div class="plan" id="pm" onclick="selPlan('m')">
         <div class="pnm">Monthly</div><div class="ppr">$4.99</div><div class="ppe">/ month</div>
       </div>
       <div class="plan sel" id="py" onclick="selPlan('y')">
-        <span class="pbg">BEST</span>
+        <span class="pbg2">BEST</span>
         <div class="pnm">Yearly</div><div class="ppr">$29.99</div><div class="ppe">/ year</div>
-        <div class="psv">↓ Save 50%</div>
+        <div class="psv">&#x2193; Save 50%</div>
       </div>
     </div>
-    <!-- PayPal Buttons rendered here -->
     <div id="pp-btn-wrap"></div>
-    <div class="pp-processing" id="pp-proc">
-      <div class="gate-spinner" style="margin:0 auto"></div>
-      <p>Processing payment&hellip; please wait</p>
-    </div>
-    <p class="ppnote">🔒 Secured by PayPal &mdash; we never see your card details</p>
+    <div class="pp-proc" id="pp-proc"><div class="g-sp" style="margin:0 auto"></div><p>Processing&hellip; do not close</p></div>
+    <p class="ppnote">&#x1F512; Secured by PayPal &mdash; we never see your card details</p>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     HOME PAGE
-════════════════════════════════════════ -->
+<!-- ════════ HOME ════════ -->
 <div class="page" id="pg-home">
   <nav>
     <div class="nlogo">GENX ECOSYSTEM</div>
     <div class="navr">
       <button class="tb" onclick="toggleTheme()" aria-label="Toggle theme">
-        <span class="ti ti-l">☀️</span>
-        <span class="tt" id="tt">🌙</span>
-        <span class="ti ti-d">🌙</span>
+        <span class="ti ti-l">&#x2600;&#xFE0F;</span>
+        <span class="tt" id="tt">&#x1F319;</span>
+        <span class="ti ti-d">&#x1F319;</span>
       </button>
       <button class="sb" id="nav-btn" onclick="nav('signin')">Sign In</button>
     </div>
@@ -874,413 +663,260 @@ button,a{touch-action:manipulation}
   <div class="hw">
     <div class="badge"><span class="bdot"></span>GENX ECOSYSTEM</div>
     <h1 class="htit"><span class="l1">Build Without</span><span class="l2">Limits.</span></h1>
-    <p class="hsub">Three powerful tools. One unified vision.<br>Crafted for developers who demand more.</p>
+    <p class="hsub">Four powerful tools. One unified vision.<br>Crafted for developers who demand more.</p>
     <div class="sep"></div>
     <div class="cards">
-      <div class="card c1"><div class="cco"></div><div class="cico">⚡</div>
-        <span class="ctag">DLL · Controls · SDK</span><h2 class="ctit">GenxUI DLL</h2>
-        <p class="cdsc">Modern Windows control library. Buttons, labels, inputs &amp; more in one DLL.</p>
-        <button class="btn b1" onclick="nav('dll');rpl(event)">Explore <span class="bico">→</span></button>
+      <div class="card c1"><div class="cco"></div><div class="cico">&#x26A1;</div>
+        <span class="ctag">DLL &#xB7; Controls &#xB7; SDK</span><h2 class="ctit">GenxUI DLL</h2>
+        <p class="cdsc">Modern Windows control library. Buttons, labels, inputs &amp; more.</p>
+        <button class="btn b1" onclick="nav('dll');rpl(event)">Explore <span class="bico">&#x2192;</span></button>
       </div>
-      <div class="card c2"><div class="cco"></div><div class="cico">🧹</div>
-        <span class="ctag">Tool · PC Optimizer</span><h2 class="ctit">Opert Cleaner</h2>
+      <div class="card c2"><div class="cco"></div><div class="cico">&#x1F9F9;</div>
+        <span class="ctag">Tool &#xB7; PC Optimizer</span><h2 class="ctit">Opert Cleaner</h2>
         <p class="cdsc">Best-in-class PC cleaner for Windows 10 &amp; 11. Remove junk, boost speed.</p>
-        <button class="btn b2" onclick="nav('clean');rpl(event)">Explore <span class="bico">→</span></button>
+        <button class="btn b2" onclick="nav('clean');rpl(event)">Explore <span class="bico">&#x2192;</span></button>
       </div>
-      <div class="card c3"><div class="cco"></div><div class="cico">🎬</div>
-        <span class="ctag">Studio · Motion · Premium</span><h2 class="ctit">Krypto Studio</h2>
+      <div class="card c3"><div class="cco"></div><div class="cico">&#x1F3AC;</div>
+        <span class="ctag">Studio &#xB7; Motion &#xB7; Premium</span><h2 class="ctit">Krypto Studio</h2>
         <p class="cdsc">Professional motion blur video studio. Cinematic effects with zero effort.</p>
-        <button class="btn b3" onclick="nav('kryp');rpl(event)">Get Premium <span class="bico">→</span></button>
+        <button class="btn b3" onclick="nav('kryp');rpl(event)">Get Premium <span class="bico">&#x2192;</span></button>
+      </div>
+      <div class="card c4"><div class="cco"></div><div class="cico">&#x1F4DD;</div>
+        <span class="ctag">Editor &#xB7; Text &#xB7; Fast</span><h2 class="ctit">Textify Editor</h2>
+        <p class="cdsc">Fast text editor with syntax highlighting, responsive UI, and performance optimization.</p>
+        <button class="btn b4" onclick="nav('textify');rpl(event)">Explore <span class="bico">&#x2192;</span></button>
       </div>
     </div>
-    <div class="ftr">Made with precision by <span>RoiiX</span> &nbsp;·&nbsp; &copy; 2025</div>
+    <div class="ftr">Made with precision by <span>RoiiX</span> &nbsp;&#xB7;&nbsp; &copy; 2025</div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SIGN IN
-════════════════════════════════════════ -->
+<!-- ════════ SIGN IN ════════ -->
 <div class="page" id="pg-signin">
   <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr">
-    <button class="tb" onclick="toggleTheme()"><span class="ti ti-l">☀️</span><span class="tt">🌙</span><span class="ti ti-d">🌙</span></button>
-    <button class="sb" onclick="nav('home')">← Back</button>
+    <button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button>
+    <button class="sb" onclick="nav('home')">&#x2190; Back</button>
   </div></nav>
   <div class="awrap"><div class="abox">
-    <div class="alogo">🔑</div>
+    <div class="alogo">&#x1F511;</div>
     <h2 class="atit">Welcome Back</h2>
     <p class="asub">Sign in to your GENX account.</p>
-    <button class="gsi" onclick="signInGoogle()">
-      <svg class="gsvg" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    <button class="gsi" id="si-goog" onclick="signInGoogle()">
+      <svg class="gsvg" viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Continue with Google
     </button>
     <div class="divdr">or</div>
-    <div class="fld"><label>Email</label><input type="email" id="si-e" placeholder="you@example.com" autocomplete="email"></div>
+    <div class="fld"><label>Email</label><input type="email" id="si-e" placeholder="you@example.com" autocomplete="email" inputmode="email"></div>
     <div class="fld"><label>Password</label><input type="password" id="si-p" placeholder="Your password" autocomplete="current-password"></div>
-    <div class="ferr" id="si-err">⚠ <span id="si-em"></span></div>
-    <button class="btn b3" id="si-btn" style="width:100%;justify-content:center;margin-top:4px" onclick="signInEmail()">Sign In <span class="bico">→</span></button>
-    <p class="asw">No account? <a href="#" onclick="nav('signup')">Sign Up</a></p>
+    <div class="ferr" id="si-err"><span id="si-em"></span></div>
+    <button class="btn b3" id="si-btn" style="width:100%;justify-content:center;margin-top:6px" onclick="signInEmail()">Sign In <span class="bico">&#x2192;</span></button>
+    <p class="asw" style="margin-top:10px">No account? <a href="#" onclick="nav('signup');return false">Sign Up</a></p>
   </div></div>
 </div>
 
-<!-- ════════════════════════════════════════
-     SIGN UP
-════════════════════════════════════════ -->
+<!-- ════════ SIGN UP ════════ -->
 <div class="page" id="pg-signup">
   <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr">
-    <button class="tb" onclick="toggleTheme()"><span class="ti ti-l">☀️</span><span class="tt">🌙</span><span class="ti ti-d">🌙</span></button>
-    <button class="sb" onclick="nav('home')">← Back</button>
+    <button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button>
+    <button class="sb" onclick="nav('home')">&#x2190; Back</button>
   </div></nav>
   <div class="awrap"><div class="abox">
-    <div class="alogo">🚀</div>
+    <div class="alogo">&#x1F680;</div>
     <h2 class="atit">Create Account</h2>
     <p class="asub">Join GENX ECOSYSTEM.</p>
-    <button class="gsi" onclick="signInGoogle()">
-      <svg class="gsvg" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+    <button class="gsi" id="su-goog" onclick="signInGoogle()">
+      <svg class="gsvg" viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Sign Up with Google
     </button>
     <div class="divdr">or</div>
     <div class="fld"><label>Full Name</label><input type="text" id="su-n" placeholder="Your Name" autocomplete="name"></div>
-    <div class="fld"><label>Email</label><input type="email" id="su-e" placeholder="you@example.com" autocomplete="email"></div>
+    <div class="fld"><label>Email</label><input type="email" id="su-e" placeholder="you@example.com" autocomplete="email" inputmode="email"></div>
     <div class="fld">
       <label>Password</label>
       <input type="password" id="su-p" placeholder="Min 8 characters" autocomplete="new-password" oninput="chkStr(this.value)">
       <div class="sw" id="sw"><div class="swbar"><div class="swfill" id="swf"></div></div><div class="swlbl" id="swl">Weak</div></div>
     </div>
-    <div class="ferr" id="su-err">⚠ <span id="su-em"></span></div>
-    <button class="btn b3" id="su-btn" style="width:100%;justify-content:center;margin-top:4px" onclick="signUpEmail()">Create Account <span class="bico">→</span></button>
-    <p class="asw">Have an account? <a href="#" onclick="nav('signin')">Sign In</a></p>
+    <div class="ferr" id="su-err"><span id="su-em"></span></div>
+    <button class="btn b3" id="su-btn" style="width:100%;justify-content:center;margin-top:6px" onclick="signUpEmail()">Create Account <span class="bico">&#x2192;</span></button>
+    <p class="asw" style="margin-top:10px">Have an account? <a href="#" onclick="nav('signin');return false">Sign In</a></p>
   </div></div>
 </div>
 
-<!-- ════════════════════════════════════════
-     DASHBOARD
-════════════════════════════════════════ -->
+<!-- ════════ DASHBOARD ════════ -->
 <div class="page" id="pg-dash">
   <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr">
-    <button class="tb" onclick="toggleTheme()"><span class="ti ti-l">☀️</span><span class="tt">🌙</span><span class="ti ti-d">🌙</span></button>
-    <button class="sb" onclick="nav('home')">🏠</button>
+    <button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button>
+    <button class="sb" onclick="nav('home')">&#x1F3E0; Home</button>
     <button class="sb" onclick="doSignOut()">Sign Out</button>
   </div></nav>
   <div class="dw">
-    <!-- User hero -->
     <div class="dh sg d1">
       <div class="dav" id="d-av">R</div>
       <div><div class="dname" id="d-nm">Loading&hellip;</div><div class="deml" id="d-em"></div></div>
     </div>
-
-    <!-- Subscription status -->
     <div class="sc sg d2">
       <div class="schdr">
-        <div class="sctit">🎬 Krypto Studio</div>
+        <div class="sctit">&#x1F3AC; Krypto Studio</div>
         <div class="sbdg si" id="sub-bdg"><span class="sbdot"></span><span id="sub-st">Inactive</span></div>
       </div>
       <div class="sgrd">
         <div class="sst"><span class="sstl">Plan</span><div class="sstv" id="sub-pl">None</div></div>
-        <div class="sst"><span class="sstl">Start</span><div class="sstv" id="sub-sd">—</div></div>
-        <div class="sst"><span class="sstl">Expires</span><div class="sstv" id="sub-ed">—</div></div>
-        <div class="sst"><span class="sstl">Days Left</span><div class="sstv" id="sub-dl">—</div></div>
+        <div class="sst"><span class="sstl">Start</span><div class="sstv" id="sub-sd">&#x2014;</div></div>
+        <div class="sst"><span class="sstl">Expires</span><div class="sstv" id="sub-ed">&#x2014;</div></div>
+        <div class="sst"><span class="sstl">Days Left</span><div class="sstv" id="sub-dl">&#x2014;</div></div>
       </div>
       <div class="pb" id="pb-w" style="display:none">
         <div class="pbl"><span>Subscription Progress</span><span id="pb-p">0%</span></div>
         <div class="pbbar"><div class="pbf" id="pb-f" style="width:0%"></div></div>
       </div>
       <div class="ctr">
-        <button class="btn b3" onclick="reqAuth()">💳 Subscribe via PayPal <span class="bico">→</span></button>
+        <button class="btn b3" onclick="reqAuth()">&#x1F4B3; Subscribe via PayPal <span class="bico">&#x2192;</span></button>
       </div>
     </div>
-
-    <!-- License Keys -->
     <div class="sc sg d3">
       <div class="schdr">
-        <div class="sctit">🗝️ License Keys</div>
-        <div class="sbdg" style="background:rgba(191,127,255,.10);border:1px solid rgba(191,127,255,.24);color:var(--a3)">One-Time Use</div>
+        <div class="sctit">&#x1F5DD;&#xFE0F; License Keys</div>
+        <div class="sbdg" style="background:rgba(178,102,255,.10);border:1px solid rgba(178,102,255,.20);color:var(--a3)">One-Time Use</div>
       </div>
       <div id="keys-list"><div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mu)">No keys yet. Subscribe to generate your license key.</div></div>
     </div>
-
-    <!-- C# Integration -->
-    <div class="sc sg d4">
-      <div class="schdr"><div class="sctit">🔧 Desktop App Integration (C#)</div></div>
-      <div class="nt ni-c" style="margin-bottom:12px">
-        <div>📌</div>
-        <div class="ntx"><strong>How keys work with your app</strong>
-          User enters key + Gmail in your WinForms login form → app calls Firebase Cloud Function → server checks key validity, expiry, and device HWID → returns status. 1 key = 1 device. Key locks to HWID on first use. Expired keys return "expired" status and app closes.
-        </div>
-      </div>
-      <span class="clbl">GenxLicense.cs — paste into your WinForms project (requires Newtonsoft.Json NuGet)</span>
-      <div class="cblk"><pre id="cs-code">// GenxLicense.cs — C# WinForms License Validator
-// NuGet: Install-Package Newtonsoft.Json
-// NuGet: Install-Package System.Management (for HWID)
-
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
-
-namespace GenxApp
-{
-    public static class GenxLicense
-    {
-        // ▶ Replace with your Firebase Cloud Function URL
-        private const string API =
-            "https://YOUR_REGION-YOUR_PROJECT.cloudfunctions.net/validateKey";
-
-        // Validate key against server
-        public static async Task&lt;LicenseResult&gt; Validate(string key, string email)
-        {
-            string hwid = GetHWID();
-            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(12) };
-            var body = JsonConvert.SerializeObject(new { key, email, hwid });
-            var content = new StringContent(body, Encoding.UTF8, "application/json");
-            try {
-                var resp = await client.PostAsync(API, content);
-                var json = await resp.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject&lt;LicenseResult&gt;(json)
-                       ?? new LicenseResult { status = "error" };
-            } catch (Exception ex) {
-                return new LicenseResult { status = "offline", message = ex.Message };
-            }
-        }
-
-        // SHA-256(MotherboardSerial | CPUId) → 24-char uppercase HWID
-        public static string GetHWID()
-        {
-            string mb  = GetWMI("Win32_BaseBoard",   "SerialNumber");
-            string cpu = GetWMI("Win32_Processor",   "ProcessorId");
-            string raw = mb + "|" + cpu;
-            using var sha = System.Security.Cryptography.SHA256.Create();
-            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(raw));
-            return BitConverter.ToString(bytes).Replace("-", "").ToUpper().Substring(0, 24);
-        }
-
-        private static string GetWMI(string cls, string prop)
-        {
-            try {
-                var searcher = new System.Management.ManagementObjectSearcher(
-                    "SELECT * FROM " + cls);
-                foreach (System.Management.ManagementObject o in searcher.Get())
-                    return o[prop]?.ToString()?.Trim() ?? "UNKNOWN";
-            } catch {}
-            return "UNKNOWN";
-        }
-    }
-
-    public class LicenseResult
-    {
-        public string status    { get; set; } // active|expired|invalid|device_mismatch|offline|error
-        public int    daysLeft  { get; set; }
-        public string plan      { get; set; }
-        public string expiresAt { get; set; }
-        public string message   { get; set; }
-    }
-
-    // ── LOGIN FORM ──
-    public partial class LoginForm : Form
-    {
-        public LoginForm()
-        {
-            InitializeComponent();
-            // Set form properties:
-            this.Text        = "Krypto Studio — Login";
-            this.Size        = new System.Drawing.Size(420, 340);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            BuildUI();
-        }
-
-        private TextBox txtEmail, txtKey;
-        private Button  btnLogin;
-        private Label   lblStatus;
-
-        private void BuildUI()
-        {
-            var lbl1 = new Label { Text="Gmail", Location=new System.Drawing.Point(30,40),
-                AutoSize=true, ForeColor=System.Drawing.Color.Gray };
-            txtEmail = new TextBox { Location=new System.Drawing.Point(30,58),
-                Width=340, Font=new System.Drawing.Font("Consolas",11) };
-
-            var lbl2 = new Label { Text="License Key", Location=new System.Drawing.Point(30,100),
-                AutoSize=true, ForeColor=System.Drawing.Color.Gray };
-            txtKey = new TextBox { Location=new System.Drawing.Point(30,118),
-                Width=340, Font=new System.Drawing.Font("Consolas",11),
-                CharacterCasing=CharacterCasing.Upper };
-
-            btnLogin = new Button { Text="Activate", Location=new System.Drawing.Point(30,164),
-                Width=340, Height=38,
-                Font=new System.Drawing.Font("Syne",11,System.Drawing.FontStyle.Bold),
-                BackColor=System.Drawing.Color.FromArgb(191,127,255),
-                ForeColor=System.Drawing.Color.White, FlatStyle=FlatStyle.Flat };
-            btnLogin.FlatAppearance.BorderSize=0;
-            btnLogin.Click += BtnLogin_Click;
-
-            lblStatus = new Label { Location=new System.Drawing.Point(30,215),
-                Width=340, AutoSize=false, Height=60, Font=new System.Drawing.Font("Consolas",10),
-                ForeColor=System.Drawing.Color.Gray, TextAlign=System.Drawing.ContentAlignment.MiddleCenter };
-
-            var link = new LinkLabel { Text="Get a key at https://roii-x.github.io/genx/",
-                Location=new System.Drawing.Point(30,280), AutoSize=true,
-                Font=new System.Drawing.Font("Consolas",9) };
-            link.Click += (s,e) => System.Diagnostics.Process.Start("https://roii-x.github.io/genx/");
-
-            this.Controls.AddRange(new Control[]{lbl1,txtEmail,lbl2,txtKey,btnLogin,lblStatus,link});
-        }
-
-        private async void BtnLogin_Click(object sender, EventArgs e)
-        {
-            string email = txtEmail.Text.Trim().ToLower();
-            string key   = txtKey.Text.Trim().ToUpper();
-
-            if (string.IsNullOrEmpty(email) || !email.Contains("@")) {
-                lblStatus.ForeColor = System.Drawing.Color.Tomato;
-                lblStatus.Text = "Enter a valid Gmail address."; return;
-            }
-            if (key.Length &lt; 19) {
-                lblStatus.ForeColor = System.Drawing.Color.Tomato;
-                lblStatus.Text = "Enter a valid license key."; return;
-            }
-
-            btnLogin.Enabled = false;
-            btnLogin.Text    = "Checking...";
-            lblStatus.ForeColor = System.Drawing.Color.Gray;
-            lblStatus.Text   = "Contacting server...";
-
-            var result = await GenxLicense.Validate(key, email);
-
-            btnLogin.Enabled = true;
-            btnLogin.Text    = "Activate";
-
-            switch (result.status)
-            {
-                case "active":
-                    lblStatus.ForeColor = System.Drawing.Color.LimeGreen;
-                    lblStatus.Text = $"✅ Activated! Plan: {result.plan} | Days left: {result.daysLeft}";
-                    await Task.Delay(1200);
-                    this.Hide();
-                    new MainForm().Show();  // ← Open your main app form here
-                    break;
-                case "expired":
-                    lblStatus.ForeColor = System.Drawing.Color.Orange;
-                    lblStatus.Text = $"❌ License expired on {result.expiresAt}
-Renew at roii-x.github.io/genx/";
-                    break;
-                case "invalid":
-                    lblStatus.ForeColor = System.Drawing.Color.Tomato;
-                    lblStatus.Text = "⛔ Invalid license key. Check for typos.";
-                    break;
-                case "device_mismatch":
-                    lblStatus.ForeColor = System.Drawing.Color.Tomato;
-                    lblStatus.Text = "⛔ Key is locked to a different device.";
-                    break;
-                case "email_mismatch":
-                    lblStatus.ForeColor = System.Drawing.Color.Tomato;
-                    lblStatus.Text = "⛔ Gmail does not match this key.";
-                    break;
-                case "disabled":
-                    lblStatus.ForeColor = System.Drawing.Color.Gray;
-                    lblStatus.Text = "⛔ This key has been disabled by admin.";
-                    break;
-                case "offline":
-                    lblStatus.ForeColor = System.Drawing.Color.Orange;
-                    lblStatus.Text = "⚠️ No internet connection. Cannot verify.";
-                    break;
-                default:
-                    lblStatus.ForeColor = System.Drawing.Color.Gray;
-                    lblStatus.Text = $"Error: {result.message ?? "Unknown error"}";
-                    break;
-            }
-        }
-    }
-}</pre></div>
-      <div class="ctr">
-        <button class="kcopy" onclick="copyCS()">📋 Copy C# Code</button>
+    <div class="nt nc sg d4" style="margin-top:4px">
+      <div style="font-size:14px;flex-shrink:0">&#x2139;&#xFE0F;</div>
+      <div class="ntx"><strong>How to use your license key</strong>
+        After payment, copy your license key from above. Open Krypto Studio on your Windows PC, enter your Gmail + license key in the login form, and click Activate. The key works on 1 device only and expires with your plan.
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     GenxUI DLL
-════════════════════════════════════════ -->
+<!-- ════════ GenxUI DLL ════════ -->
 <div class="page" id="pg-dll">
-  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr">
-    <button class="tb" onclick="toggleTheme()"><span class="ti ti-l">☀️</span><span class="tt">🌙</span><span class="ti ti-d">🌙</span></button>
-    <button class="sb" onclick="nav('home')">← Back</button>
-  </div></nav>
+  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr"><button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button><button class="sb" onclick="nav('home')">&#x2190; Back</button></div></nav>
   <div class="ip">
-    <div class="iph sg d1">
-      <div class="ipico ii1">⚡</div>
-      <div class="ipm">
-        <span class="iptag it1">DLL · Windows Controls · SDK</span>
-        <h1 class="iptit">GenxUI DLL</h1>
-        <p class="ipsub">A powerful Windows control library packed into a single DLL. Drop it in, get modern animated UI instantly.</p>
-        <div class="vbg vb1"><span class="vd vd1"></span>v2.0.5.2 — Latest Stable</div>
-      </div>
-    </div>
-    <div class="sg d2"><div class="igr"><div class="ic"><span class="icl">Version</span><div class="icv">2.0.5.2</div></div><div class="ic"><span class="icl">Release</span><div class="icv" style="color:var(--a1)">Latest ✓</div></div><div class="ic"><span class="icl">Platform</span><div class="icv">Windows</div></div><div class="ic"><span class="icl">License</span><div class="icv">Free</div></div></div></div>
-    <div class="sg d3"><div class="stit">Included Controls</div><div class="cgr"><div class="ci"><span class="cdot"></span><span class="cn">Button</span></div><div class="ci"><span class="cdot"></span><span class="cn">Label</span></div><div class="ci"><span class="cdot"></span><span class="cn">TextBox</span></div><div class="ci"><span class="cdot"></span><span class="cn">CheckBox</span></div><div class="ci"><span class="cdot"></span><span class="cn">RadioButton</span></div><div class="ci"><span class="cdot"></span><span class="cn">ProgressBar</span></div><div class="ci"><span class="cdot"></span><span class="cn">Panel</span></div><div class="ci"><span class="cdot"></span><span class="cn">Toggle</span></div><div class="ci"><span class="cdot"></span><span class="cn">ComboBox</span></div><div class="ci"><span class="cdot"></span><span class="cn">ListBox</span></div><div class="ci"><span class="cdot"></span><span class="cn">Tooltip</span></div><div class="ci"><span class="cdot"></span><span class="cn">Notification</span></div></div></div>
-    <div class="sg d4"><div class="stit">Key Features</div><div class="fl"><div class="fi"><div class="fck fk1">✓</div><div><div class="ftt">Zero Dependencies</div><div class="fds">Single .dll — no NuGet or extra installs needed.</div></div></div><div class="fi"><div class="fck fk1">✓</div><div><div class="ftt">Dark &amp; Light Themes</div><div class="fds">Full color customization, system-theme aware.</div></div></div><div class="fi"><div class="fck fk1">✓</div><div><div class="ftt">Smooth Animations</div><div class="fds">Every control ships with hover transitions.</div></div></div><div class="fi"><div class="fck fk1">✓</div><div><div class="ftt">.NET &amp; VB6 Compatible</div><div class="fds">WinForms, VB.NET, C#, and VB6.</div></div></div></div></div>
+    <div class="iph sg d1"><div class="ipico ii1">&#x26A1;</div><div class="ipm">
+      <span class="iptag it1">DLL &#xB7; Windows Controls &#xB7; SDK</span>
+      <h1 class="iptit">GenxUI DLL</h1>
+      <p class="ipsub">A powerful Windows control library packed into a single DLL. Drop it in, get modern animated UI instantly.</p>
+      <div class="vbg vb1"><span class="vd vd1"></span>v2.0.5.2 &#x2014; Latest Stable</div>
+    </div></div>
+    <div class="sg d2"><div class="igr">
+      <div class="ic"><span class="icl">Version</span><div class="icv">2.0.5.2</div></div>
+      <div class="ic"><span class="icl">Release</span><div class="icv" style="color:var(--a1)">Latest &#x2713;</div></div>
+      <div class="ic"><span class="icl">Platform</span><div class="icv">Windows</div></div>
+      <div class="ic"><span class="icl">License</span><div class="icv">Free</div></div>
+    </div></div>
+    <div class="sg d3"><div class="stit">Included Controls</div><div class="cgr">
+      <div class="ci"><span class="cdot"></span><span class="cn">Button</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">Label</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">TextBox</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">CheckBox</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">RadioButton</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">ProgressBar</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">Panel</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">Toggle</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">ComboBox</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">ListBox</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">Tooltip</span></div>
+      <div class="ci"><span class="cdot"></span><span class="cn">Notification</span></div>
+    </div></div>
+    <div class="sg d4"><div class="stit">Key Features</div><div class="fl">
+      <div class="fi"><div class="fck fk1">&#x2713;</div><div><div class="ftt">Zero Dependencies</div><div class="fds">Single .dll &#x2014; no NuGet or extra installs needed.</div></div></div>
+      <div class="fi"><div class="fck fk1">&#x2713;</div><div><div class="ftt">Dark &amp; Light Themes</div><div class="fds">Full color customization, system-theme aware.</div></div></div>
+      <div class="fi"><div class="fck fk1">&#x2713;</div><div><div class="ftt">Smooth Animations</div><div class="fds">Every control ships with hover transitions.</div></div></div>
+      <div class="fi"><div class="fck fk1">&#x2713;</div><div><div class="ftt">.NET &amp; VB6 Compatible</div><div class="fds">WinForms, VB.NET, C#, and VB6.</div></div></div>
+    </div></div>
     <div class="sg d4 ctr">
-      <!-- ▼ REPLACE HREF WITH YOUR REAL DOWNLOAD LINK ▼ -->
-      <a class="btn b1" href="https://cdn.discordapp.com/attachments/1488151863701540874/1488603146035925002/OPERT.zip?ex=69cd6136&is=69cc0fb6&hm=626d88066f4e67a4705db7c107a47c4303aadd3f23d5b77b098fdd871087621e&" download>Download DLL ↓</a>
-      <button class="btn bgh" onclick="rpl(event)">View Docs →</button>
+      <a class="btn b1" id="dll-dl" href="#">Download DLL &#x2193;</a>
+      <button class="btn bgh" onclick="rpl(event)">View Docs &#x2192;</button>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     Opert Cleaner
-════════════════════════════════════════ -->
+<!-- ════════ Opert Cleaner ════════ -->
 <div class="page" id="pg-clean">
-  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr">
-    <button class="tb" onclick="toggleTheme()"><span class="ti ti-l">☀️</span><span class="tt">🌙</span><span class="ti ti-d">🌙</span></button>
-    <button class="sb" onclick="nav('home')">← Back</button>
-  </div></nav>
+  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr"><button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button><button class="sb" onclick="nav('home')">&#x2190; Back</button></div></nav>
   <div class="ip">
-    <div class="iph sg d1">
-      <div class="ipico ii2">🧹</div>
-      <div class="ipm">
-        <span class="iptag it2">PC Tool · Optimizer · Cleaner</span>
-        <h1 class="iptit">Opert Cleaner</h1>
-        <p class="ipsub">The best PC cleaner for modern Windows. Remove junk, fix registries, speed up your machine in seconds.</p>
-        <div class="vbg vb2"><span class="vd vd2"></span>Demo 1.0.0 — Latest</div>
-      </div>
+    <div class="iph sg d1"><div class="ipico ii2">&#x1F9F9;</div><div class="ipm">
+      <span class="iptag it2">PC Tool &#xB7; Optimizer &#xB7; Cleaner</span>
+      <h1 class="iptit">Opert Cleaner</h1>
+      <p class="ipsub">The best PC cleaner for modern Windows. Remove junk, fix registries, speed up your machine in seconds.</p>
+      <div class="vbg vb2"><span class="vd vd2"></span>Demo 1.0.0 &#x2014; Latest</div>
+    </div></div>
+    <div class="sg d2"><div class="nb nw2"><span class="nb-ico">&#x26A0;&#xFE0F;</span><div class="nb-txt"><strong>Demo Version 1.0.0</strong>Early-access demo. Full release coming soon.</div></div>
+      <div class="stit">Supported Systems</div>
+      <div class="osb"><span class="osg">&#x1FA9F; Windows 10</span><span class="osg">&#x1FA9F; Windows 11</span></div>
     </div>
-    <div class="sg d2"><div class="nb nw2"><span class="nb-ico">⚠️</span><div class="nb-txt"><strong>Demo Version 1.0.0</strong>Early-access demo. Full release coming soon.</div></div><div class="stit">Supported Systems</div><div class="osb"><span class="osg">🪟 Windows 10</span><span class="osg">🪟 Windows 11</span></div></div>
-    <div class="sg d3"><div class="igr"><div class="ic"><span class="icl">Version</span><div class="icv">Demo 1.0.0</div></div><div class="ic"><span class="icl">Status</span><div class="icv" style="color:var(--a2)">Demo</div></div><div class="ic"><span class="icl">OS</span><div class="icv">10 / 11</div></div><div class="ic"><span class="icl">Size</span><div class="icv">~8 MB</div></div></div></div>
-    <div class="sg d4"><div class="stit">What It Cleans</div><div class="fl"><div class="fi"><div class="fck fk2">✓</div><div><div class="ftt">Junk &amp; Temp Files</div><div class="fds">Wipe cached and leftover files in one click.</div></div></div><div class="fi"><div class="fck fk2">✓</div><div><div class="ftt">Registry Cleaner</div><div class="fds">Fix broken registry entries for stability.</div></div></div><div class="fi"><div class="fck fk2">✓</div><div><div class="ftt">Browser Cache</div><div class="fds">Clear Chrome, Edge, Firefox cache instantly.</div></div></div><div class="fi"><div class="fck fk2">✓</div><div><div class="ftt">Startup Optimizer</div><div class="fds">Faster boot times with one click.</div></div></div></div></div>
+    <div class="sg d3"><div class="igr">
+      <div class="ic"><span class="icl">Version</span><div class="icv">Demo 1.0.0</div></div>
+      <div class="ic"><span class="icl">Status</span><div class="icv" style="color:var(--a2)">Demo</div></div>
+      <div class="ic"><span class="icl">OS</span><div class="icv">10 / 11</div></div>
+      <div class="ic"><span class="icl">Size</span><div class="icv">~8 MB</div></div>
+    </div></div>
+    <div class="sg d4"><div class="stit">What It Cleans</div><div class="fl">
+      <div class="fi"><div class="fck fk2">&#x2713;</div><div><div class="ftt">Junk &amp; Temp Files</div><div class="fds">Wipe cached and leftover files in one click.</div></div></div>
+      <div class="fi"><div class="fck fk2">&#x2713;</div><div><div class="ftt">Registry Cleaner</div><div class="fds">Fix broken registry entries for stability.</div></div></div>
+      <div class="fi"><div class="fck fk2">&#x2713;</div><div><div class="ftt">Browser Cache</div><div class="fds">Clear Chrome, Edge, Firefox cache instantly.</div></div></div>
+      <div class="fi"><div class="fck fk2">&#x2713;</div><div><div class="ftt">Startup Optimizer</div><div class="fds">Faster boot times with one click.</div></div></div>
+    </div></div>
+    <div class="sg d4 ctr"><a class="btn b2" id="opert-dl" href="#">Download Demo &#x2193;</a></div>
+  </div>
+</div>
+
+<!-- ════════ Krypto Studio ════════ -->
+<div class="page" id="pg-kryp">
+  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr"><button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button><button class="sb" onclick="nav('home')">&#x2190; Back</button></div></nav>
+  <div class="ip">
+    <div class="iph sg d1"><div class="ipico ii3">&#x1F3AC;</div><div class="ipm">
+      <span class="iptag it3">Motion &#xB7; Video Studio &#xB7; Premium</span>
+      <h1 class="iptit">Krypto Studio</h1>
+      <p class="ipsub">The best motion blur video studio. Real-time blur, 4K GPU export, cinematic presets. License key required.</p>
+      <div class="vbg vb3"><span class="vd vd3"></span>Premium &#x2014; License Key Required</div>
+    </div></div>
+    <div class="sg d2"><div class="nb np2"><span class="nb-ico">&#x1F512;</span><div class="nb-txt"><strong>Premium &#x2014; Subscribe &amp; Get License Key</strong>Pay via PayPal and your unique license key is generated instantly. Enter it in the desktop app on your Windows PC. 1 key = 1 device. Auto-expires with your plan.</div></div></div>
+    <div class="sg d3"><div class="igr">
+      <div class="ic"><span class="icl">Type</span><div class="icv">Desktop App</div></div>
+      <div class="ic"><span class="icl">Model</span><div class="icv" style="color:var(--a3)">Premium</div></div>
+      <div class="ic"><span class="icl">Specialty</span><div class="icv">Motion Blur</div></div>
+      <div class="ic"><span class="icl">Export</span><div class="icv">4K MP4/MOV</div></div>
+    </div></div>
+    <div class="sg d4"><div class="stit">Premium Features</div><div class="fl">
+      <div class="fi"><div class="fck fk3">&#x2713;</div><div><div class="ftt">Motion Blur Engine</div><div class="fds">Per-frame blur with adjustable shutter &amp; samples.</div></div></div>
+      <div class="fi"><div class="fck fk3">&#x2713;</div><div><div class="ftt">Real-Time Preview</div><div class="fds">Live blur on timeline &#x2014; zero render waiting.</div></div></div>
+      <div class="fi"><div class="fck fk3">&#x2713;</div><div><div class="ftt">4K GPU Export</div><div class="fds">GPU-accelerated rendering up to 4K.</div></div></div>
+      <div class="fi"><div class="fck fk3">&#x2713;</div><div><div class="ftt">Cinematic Presets</div><div class="fds">Gaming highlights, music videos, and film edits.</div></div></div>
+    </div></div>
     <div class="sg d4 ctr">
-      <!-- ▼ REPLACE HREF WITH YOUR REAL DOWNLOAD LINK ▼ -->
-      <a class="btn b2" href="https://cdn.discordapp.com/attachments/1488151863701540874/1488603146035925002/OPERT.zip?ex=69cd6136&is=69cc0fb6&hm=626d88066f4e67a4705db7c107a47c4303aadd3f23d5b77b098fdd871087621e&" download>Download Demo ↓</a>
+      <button class="btn b3" onclick="reqAuth()">Subscribe &amp; Get License Key <span class="bico">&#x2192;</span></button>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     Krypto Studio
-════════════════════════════════════════ -->
-<div class="page" id="pg-kryp">
-  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr">
-    <button class="tb" onclick="toggleTheme()"><span class="ti ti-l">☀️</span><span class="tt">🌙</span><span class="ti ti-d">🌙</span></button>
-    <button class="sb" onclick="nav('home')">← Back</button>
-  </div></nav>
+<!-- ════════ Textify Editor ════════ -->
+<div class="page" id="pg-textify">
+  <nav><div class="nlogo">GENX ECOSYSTEM</div><div class="navr"><button class="tb" onclick="toggleTheme()" aria-label="Toggle theme"><span class="ti ti-l">&#x2600;&#xFE0F;</span><span class="tt">&#x1F319;</span><span class="ti ti-d">&#x1F319;</span></button><button class="sb" onclick="nav('home')">&#x2190; Back</button></div></nav>
   <div class="ip">
-    <div class="iph sg d1">
-      <div class="ipico ii3">🎬</div>
-      <div class="ipm">
-        <span class="iptag it3">Motion · Video Studio · Premium</span>
-        <h1 class="iptit">Krypto Studio</h1>
-        <p class="ipsub">The best motion blur video studio. Real-time blur, 4K GPU export, and cinematic presets. License key required.</p>
-        <div class="vbg vb3"><span class="vd vd3"></span>Premium — License Key Required</div>
-      </div>
-    </div>
-    <div class="sg d2"><div class="nb np2"><span class="nb-ico">🔒</span><div class="nb-txt"><strong>Premium — License Key Required</strong>Subscribe via PayPal. Your license key is generated and saved to your dashboard instantly. Enter it in the desktop app. 1 key = 1 device. Key auto-expires with your plan.</div></div></div>
-    <div class="sg d3"><div class="igr"><div class="ic"><span class="icl">Type</span><div class="icv">Desktop App</div></div><div class="ic"><span class="icl">Model</span><div class="icv" style="color:var(--a3)">Premium</div></div><div class="ic"><span class="icl">Specialty</span><div class="icv">Motion Blur</div></div><div class="ic"><span class="icv">4K MP4/MOV</span><span class="icl">Export</span></div></div></div>
-    <div class="sg d4"><div class="stit">Premium Features</div><div class="fl"><div class="fi"><div class="fck fk3">✓</div><div><div class="ftt">Motion Blur Engine</div><div class="fds">Per-frame blur with adjustable shutter &amp; samples.</div></div></div><div class="fi"><div class="fck fk3">✓</div><div><div class="ftt">Real-Time Preview</div><div class="fds">Live blur on timeline — zero render waiting.</div></div></div><div class="fi"><div class="fck fk3">✓</div><div><div class="ftt">4K GPU Export</div><div class="fds">GPU-accelerated rendering up to 4K resolution.</div></div></div><div class="fi"><div class="fck fk3">✓</div><div><div class="ftt">Cinematic Presets</div><div class="fds">Gaming highlights, music videos, and film.</div></div></div></div></div>
+    <div class="iph sg d1"><div class="ipico ii4">&#x1F4DD;</div><div class="ipm">
+      <span class="iptag it4">Editor &#xB7; Text &#xB7; Fast</span>
+      <h1 class="iptit">Textify Editor</h1>
+      <p class="ipsub">A blazing-fast text editor for Windows with syntax highlighting, responsive UI, and performance optimization. Built for developers and power users.</p>
+      <div class="vbg vb4"><span class="vd vd4"></span>v1.0.0 &#x2014; Latest Stable</div>
+    </div></div>
+    <div class="sg d2"><div class="igr">
+      <div class="ic"><span class="icl">Version</span><div class="icv">1.0.0</div></div>
+      <div class="ic"><span class="icl">Release</span><div class="icv" style="color:#ffb44d">Latest &#x2713;</div></div>
+      <div class="ic"><span class="icl">OS</span><div class="icv">Win 10/11</div></div>
+      <div class="ic"><span class="icl">License</span><div class="icv">Free</div></div>
+    </div></div>
+    <div class="sg d3"><div class="stit">Key Features</div><div class="fl">
+      <div class="fi"><div class="fck fk4">&#x2713;</div><div><div class="ftt">Fast Text Editor</div><div class="fds">Opens large files instantly with zero lag.</div></div></div>
+      <div class="fi"><div class="fck fk4">&#x2713;</div><div><div class="ftt">Syntax Highlighting</div><div class="fds">Supports C#, Python, JS, HTML, CSS, and more.</div></div></div>
+      <div class="fi"><div class="fck fk4">&#x2713;</div><div><div class="ftt">Responsive UI</div><div class="fds">Adapts to any window size with clean layout.</div></div></div>
+      <div class="fi"><div class="fck fk4">&#x2713;</div><div><div class="ftt">Performance Optimized</div><div class="fds">Lightweight, fast startup, low memory usage.</div></div></div>
+      <div class="fi"><div class="fck fk4">&#x2713;</div><div><div class="ftt">User-Friendly UI</div><div class="fds">Clean interface with keyboard shortcuts and tabs.</div></div></div>
+      <div class="fi"><div class="fck fk4">&#x2713;</div><div><div class="ftt">Windows 10 &amp; 11</div><div class="fds">Fully compatible with modern Windows versions.</div></div></div>
+    </div></div>
     <div class="sg d4 ctr">
-      <button class="btn b3" onclick="reqAuth()">Subscribe &amp; Get License Key <span class="bico">→</span></button>
+      <a class="btn b4" id="textify-dl" href="#">Download Free &#x2193;</a>
     </div>
   </div>
 </div>
@@ -1288,78 +924,289 @@ Renew at roii-x.github.io/genx/";
 <script>
 'use strict';
 /* ═══════════════════════════════════════════
-   CONSTANTS — edit here to change download links
+   DOWNLOAD LINKS — paste your real links here
 ═══════════════════════════════════════════ */
-const KRYPTO_DOWNLOAD  = 'YOUR_KRYPTO_STUDIO_DOWNLOAD_LINK';  // ← put your .exe/.zip link
-const GENXUI_DOWNLOAD  = 'YOUR_GENXUI_DLL_DOWNLOAD_LINK';
-const OPERT_DOWNLOAD   = 'YOUR_OPERT_CLEANER_DOWNLOAD_LINK';
-const RC_SITE_KEY      = 'YOUR_RC_KEY';
-const RC_MIN_SCORE     = 0.5;
+const DL = {
+  krypto  : '#',  // ← Krypto Studio download link
+  genxui  : '#',  // ← GenxUI DLL download link
+  opert   : 'https://cdn.discordapp.com/attachments/1488151863701540874/1488603146035925002/OPERT.zip?ex=69cd6136&is=69cc0fb6&hm=626d88066f4e67a4705db7c107a47c4303aadd3f23d5b77b098fdd871087621e&',  // ← Opert Cleaner download link
+  textify : '#',  // ← Textify Editor download link
+};
+document.getElementById('dll-dl').href     = DL.genxui;
+document.getElementById('opert-dl').href   = DL.opert;
+document.getElementById('textify-dl').href = DL.textify;
+
+const RC_KEY = '6LcybJ4sAAAAAKhu5iCNlgQNgYUMlaPk4QA-HknX';
 
 /* ═══════════════════════════════════════════
-   ANTI-DDOS: Request rate limiter
+   ANTI-DDOS
 ═══════════════════════════════════════════ */
 const RL = {
-  buckets: {},
-  check(action, max = 5, windowMs = 60000) {
-    const now = Date.now();
-    if (!this.buckets[action]) this.buckets[action] = { c: 0, r: now + windowMs };
-    const b = this.buckets[action];
-    if (now > b.r) { b.c = 0; b.r = now + windowMs; }
-    if (++b.c > max) { showRL(Math.ceil((b.r - now) / 1e3)); return false; }
+  b: {},
+  check(k, max, ms) {
+    const n = Date.now();
+    if (!this.b[k]) this.b[k] = { c: 0, r: n + ms };
+    const bk = this.b[k];
+    if (n > bk.r) { bk.c = 0; bk.r = n + ms; }
+    if (++bk.c > max) { showRL(Math.ceil((bk.r - n) / 1e3)); return false; }
     return true;
   }
 };
-let _rlI = null;
-function showRL(sec) {
-  const el = document.getElementById('rl');
-  el.classList.add('v');
-  let s = sec;
-  document.getElementById('rl-t').textContent = s;
-  clearInterval(_rlI);
-  _rlI = setInterval(() => {
-    document.getElementById('rl-t').textContent = --s;
-    if (s <= 0) { clearInterval(_rlI); el.classList.remove('v'); }
-  }, 1000);
+let _rli = null;
+function showRL(s) {
+  const el = document.getElementById('rl'), td = document.getElementById('rl-t');
+  el.classList.add('v'); td.textContent = s;
+  clearInterval(_rli);
+  _rli = setInterval(() => { td.textContent = --s; if (s <= 0) { clearInterval(_rli); el.classList.remove('v'); } }, 1000);
 }
 
 /* ═══════════════════════════════════════════
-   RECAPTCHA v3
+   RECAPTCHA v3 helper
 ═══════════════════════════════════════════ */
-async function getRC(action) {
+function execRC(action) {
   return new Promise(res => {
-    if (typeof grecaptcha === 'undefined') { res({ score: 1, token: 'norc' }); return; }
-    try {
-      grecaptcha.ready(() => {
-        grecaptcha.execute(RC_SITE_KEY, { action })
-          .then(token => res({ token, score: 1 }))  // score verified server-side
-          .catch(() => res({ score: 0, token: '' }));
-      });
-    } catch { res({ score: 0, token: '' }); }
+    if (typeof grecaptcha === 'undefined') { res(''); return; }
+    try { grecaptcha.ready(() => { grecaptcha.execute(RC_KEY, { action }).then(res).catch(() => res('')); }); }
+    catch { res(''); }
   });
 }
 
 /* ═══════════════════════════════════════════
-   GATE — reCAPTCHA check on load
+   CAPTCHA GATE — waits for reCAPTCHA to load
 ═══════════════════════════════════════════ */
 async function runGate() {
-  const spin = document.getElementById('gate-spin');
-  const fail = document.getElementById('gate-fail');
-  spin.style.display = 'block';
-  fail.classList.remove('v');
-  const rc = await getRC('gate');
-  if (rc.score >= RC_MIN_SCORE || rc.token === 'norc') {
-    // Pass — hide gate with fade
-    const gate = document.getElementById('gate');
-    gate.classList.add('hiding');
-    setTimeout(() => gate.classList.add('hidden'), 520);
-    // Now activate the home page
-    document.getElementById('pg-home').classList.add('active');
-    initAuth();
-  } else {
-    spin.style.display = 'none';
-    fail.classList.add('v');
+  document.getElementById('gspin').style.display = 'block';
+  document.getElementById('gfail').classList.remove('v');
+  // Wait up to 5s for reCAPTCHA SDK
+  for (let i = 0; i < 20; i++) {
+    if (typeof grecaptcha !== 'undefined') break;
+    await new Promise(r => setTimeout(r, 250));
   }
+  try {
+    const token = await execRC('gate');
+    // token empty only if SDK not loaded — still allow (score verified server-side in prod)
+    const gate = document.getElementById('gate');
+    gate.classList.add('fade');
+    setTimeout(() => { gate.classList.add('gone'); }, 420);
+    // Activate home page
+    pg = 'home';
+    document.getElementById('pg-home').classList.add('active');
+    initFirebase(); // load Firebase AFTER gate
+    initPayPal();   // load PayPal AFTER gate
+  } catch {
+    document.getElementById('gspin').style.display = 'none';
+    document.getElementById('gfail').classList.add('v');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   FIREBASE — loaded dynamically to avoid
+   "Cannot read properties of undefined" on
+   GitHub Pages with module top-level await
+═══════════════════════════════════════════ */
+let fbUser = null;
+let _fbLoaded = false;
+let _fbCallbacks = [];
+
+function onFBReady(cb) {
+  if (_fbLoaded) { cb(); return; }
+  _fbCallbacks.push(cb);
+}
+
+function initFirebase() {
+  // Load Firebase scripts sequentially (no top-level await issue)
+  const loadScript = (src) => new Promise((res, rej) => {
+    const s = document.createElement('script'); s.type = 'module';
+    s.textContent = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+
+  // Use importmap-free inline approach
+  const fbModule = document.createElement('script');
+  fbModule.type = 'module';
+  fbModule.textContent = `
+    import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,
+      GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,
+      setPersistence,browserLocalPersistence,updateProfile}
+      from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import{getFirestore,doc,setDoc,getDoc,updateDoc,collection,
+      addDoc,query,where,getDocs,serverTimestamp,Timestamp}
+      from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const cfg={
+      apiKey:"AIzaSyDKf1R5rLXIT7rBZuQ5Q-9AIkqTVtPX97w",
+      authDomain:"genx-7aea0.firebaseapp.com",
+      projectId:"genx-7aea0",
+      storageBucket:"genx-7aea0.firebasestorage.app",
+      messagingSenderId:"276475030043",
+      appId:"1:276475030043:web:ca34651c496c38fc1966be"
+    };
+    try{
+      const app=initializeApp(cfg);
+      const auth=getAuth(app);
+      const db=getFirestore(app);
+      const gp=new GoogleAuthProvider();
+      gp.setCustomParameters({prompt:'select_account'});
+      try{await setPersistence(auth,browserLocalPersistence);}catch{}
+      window.__fb={auth,db,gp,createUserWithEmailAndPassword,signInWithEmailAndPassword,
+        signInWithPopup,signOut,onAuthStateChanged,updateProfile,
+        doc,setDoc,getDoc,updateDoc,collection,addDoc,
+        query,where,getDocs,serverTimestamp,Timestamp};
+      window.dispatchEvent(new Event('fb-ready'));
+    }catch(e){console.error('Firebase init:',e);window.dispatchEvent(new CustomEvent('fb-error',{detail:e.message}));}
+  `;
+  document.head.appendChild(fbModule);
+
+  addEventListener('fb-ready', () => {
+    _fbLoaded = true;
+    _fbCallbacks.forEach(cb => cb());
+    _fbCallbacks = [];
+    startAuthListener();
+  }, { once: true });
+
+  addEventListener('fb-error', (e) => {
+    console.error('Firebase error:', e.detail);
+    toast('Firebase error: ' + e.detail, '❌', 8000);
+  }, { once: true });
+}
+
+function startAuthListener() {
+  const { auth, onAuthStateChanged } = window.__fb;
+  onAuthStateChanged(auth, async u => {
+    fbUser = u;
+    const btn = document.getElementById('nav-btn');
+    if (u) {
+      if (btn) { btn.textContent = 'Dashboard'; btn.onclick = () => nav('dash'); }
+      // Only redirect if currently on an auth page
+      if (pg === 'signin' || pg === 'signup') nav('dash');
+      await loadDash(u);
+    } else {
+      if (btn) { btn.textContent = 'Sign In'; btn.onclick = () => nav('signin'); }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════
+   AUTH HELPERS
+═══════════════════════════════════════════ */
+function setE(p, m) {
+  const e = document.getElementById(p + '-err'), em = document.getElementById(p + '-em');
+  if (e && em) { e.classList.add('v'); em.textContent = '\u26A0 ' + m; }
+}
+function clrE(p) { const e = document.getElementById(p + '-err'); if (e) e.classList.remove('v'); }
+function setLd(b, on, lbl) {
+  if (!b) return; b.disabled = !!on;
+  b.innerHTML = on ? '<span class="sp"></span>&nbsp;Loading&hellip;' : lbl + ' <span class="bico">&rarr;</span>';
+}
+function pErr(e) {
+  const m = {
+    'auth/email-already-in-use':'Email already registered — try signing in.',
+    'auth/invalid-email':'Enter a valid email address.',
+    'auth/wrong-password':'Incorrect password. Check and try again.',
+    'auth/user-not-found':'No account found with this email.',
+    'auth/invalid-credential':'Email or password is incorrect.',
+    'auth/too-many-requests':'Too many attempts. Try again later.',
+    'auth/weak-password':'Password is too weak (min 6 chars).',
+    'auth/popup-closed-by-user':'Sign-in popup was closed.',
+    'auth/popup-blocked':'Allow popups for this site to use Google Sign-In.',
+    'auth/network-request-failed':'Network error. Check your connection.',
+    'auth/unauthorized-domain':'This domain is not authorized. Add roii-x.github.io to Firebase authorized domains.',
+    'auth/internal-error':'Internal error. Please retry.',
+  };
+  return m[e.code] || (e.message ? e.message.replace('Firebase: ','').split(' (auth')[0] : 'Authentication error.');
+}
+
+/* Google Sign-In */
+async function signInGoogle() {
+  if (!RL.check('g-auth', 5, 60000)) return;
+  if (!window.__fb) { toast('Firebase loading, try again in a moment', '⏳'); return; }
+  const { auth, gp, signInWithPopup } = window.__fb;
+  // Disable buttons to prevent double-click
+  ['si-goog','su-goog'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = true; });
+  try {
+    const r = await signInWithPopup(auth, gp);
+    await saveUserDoc(r.user);
+    toast('Welcome, ' + (r.user.displayName || 'User').split(' ')[0] + '! \uD83C\uDF89', '\u2705');
+  } catch (e) {
+    if (e.code !== 'auth/popup-closed-by-user') {
+      const errMsg = pErr(e);
+      // Show on current page
+      if (pg === 'signin') setE('si', errMsg);
+      else if (pg === 'signup') setE('su', errMsg);
+      else toast(errMsg, '\u274C');
+    }
+  } finally {
+    ['si-goog','su-goog'].forEach(id => { const el = document.getElementById(id); if (el) el.disabled = false; });
+  }
+}
+
+/* Email Sign-Up */
+async function signUpEmail() {
+  if (!RL.check('signup', 3, 120000)) return;
+  const name  = document.getElementById('su-n').value.trim();
+  const email = document.getElementById('su-e').value.trim();
+  const pass  = document.getElementById('su-p').value;
+  clrE('su');
+  if (!name)  return setE('su', 'Enter your full name');
+  if (!email || !email.includes('@')) return setE('su', 'Enter a valid email');
+  if (pass.length < 6) return setE('su', 'Password must be at least 6 characters');
+  if (!window.__fb) { toast('Firebase loading, try again', '\u23F3'); return; }
+  const btn = document.getElementById('su-btn'); setLd(btn, 1, 'Create Account');
+  const { auth, createUserWithEmailAndPassword, updateProfile } = window.__fb;
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    // Set display name
+    try { await updateProfile(cred.user, { displayName: name }); } catch {}
+    await saveUserDoc(cred.user, name);
+    toast('Account created! Welcome \uD83C\uDF89', '\u2705', 4000);
+    nav('dash');
+  } catch (e) { setE('su', pErr(e)); }
+  finally { setLd(btn, 0, 'Create Account'); }
+}
+
+/* Email Sign-In */
+async function signInEmail() {
+  if (!RL.check('signin', 5, 60000)) return;
+  const email = document.getElementById('si-e').value.trim();
+  const pass  = document.getElementById('si-p').value;
+  clrE('si');
+  if (!email || !email.includes('@')) return setE('si', 'Enter a valid email');
+  if (!pass) return setE('si', 'Enter your password');
+  if (!window.__fb) { toast('Firebase loading, try again', '\u23F3'); return; }
+  const btn = document.getElementById('si-btn'); setLd(btn, 1, 'Sign In');
+  const { auth, signInWithEmailAndPassword } = window.__fb;
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    toast('Welcome back! \uD83D\uDC4B', '\u2705');
+  } catch (e) { setE('si', pErr(e)); }
+  finally { setLd(btn, 0, 'Sign In'); }
+}
+
+/* Sign Out */
+async function doSignOut() {
+  if (!window.__fb) return;
+  await window.__fb.signOut(window.__fb.auth);
+  toast('Signed out', '\uD83D\uDC4B');
+  nav('home');
+}
+
+/* Save user doc (first sign-in only) */
+async function saveUserDoc(u, displayName) {
+  if (!window.__fb) return;
+  const { db, doc, setDoc, getDoc, serverTimestamp } = window.__fb;
+  try {
+    const ref = doc(db, 'users', u.uid);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        uid: u.uid, email: u.email,
+        displayName: displayName || u.displayName || u.email.split('@')[0],
+        photoURL: u.photoURL || null,
+        createdAt: serverTimestamp(),
+        subscription: { status: 'inactive', plan: null, startDate: null, expireDate: null }
+      });
+    }
+  } catch (e) { console.warn('saveUserDoc:', e.message); }
 }
 
 /* ═══════════════════════════════════════════
@@ -1371,27 +1218,23 @@ function applyTheme(t) {
   theme = t;
   document.documentElement.setAttribute('data-theme', t);
   localStorage.setItem('gnx-t', t);
-  document.querySelectorAll('.tt').forEach(el => el.textContent = t === 'dark' ? '🌙' : '☀️');
+  document.querySelectorAll('.tt').forEach(el => el.textContent = t === 'dark' ? '\uD83C\uDF19' : '\u2600\uFE0F');
 }
 function toggleTheme() { applyTheme(theme === 'dark' ? 'light' : 'dark'); }
 
 /* ═══════════════════════════════════════════
-   CURSOR — separated dots/ring tracking via rAF
+   CURSOR
 ═══════════════════════════════════════════ */
 const fine = matchMedia('(pointer:fine)').matches;
 if (fine) {
   const cur = document.getElementById('cur'), cr = document.getElementById('cring');
   let mx = 0, my = 0, rx = 0, ry = 0;
-  // Dot: set immediately (no lag)
-  addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
-  }, { passive: true });
-  // Ring: smooth follow
-  (function tc() { rx += (mx - rx) * .09; ry += (my - ry) * .09; cr.style.left = rx + 'px'; cr.style.top = ry + 'px'; requestAnimationFrame(tc); })();
-  document.querySelectorAll('.card,.btn,.plan,.sb,.mcl,.ci,.fi,.ic,.gsi,.tb,.kcopy,.kdl').forEach(el => {
-    el.addEventListener('mouseenter', () => { cur.style.width = '14px'; cur.style.height = '14px'; }, { passive: true });
-    el.addEventListener('mouseleave', () => { cur.style.width = '8px'; cur.style.height = '8px'; }, { passive: true });
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; }, { passive: true });
+  (function tc() { rx += (mx-rx)*.088; ry += (my-ry)*.088; cr.style.left = rx+'px'; cr.style.top = ry+'px'; requestAnimationFrame(tc); })();
+  const hov = e => { const t = e.type==='mouseenter'; cur.style.width = t?'13px':'8px'; cur.style.height = t?'13px':'8px'; };
+  document.querySelectorAll('.card,.btn,.plan,.sb,.mcl,.ci,.fi,.ic,.gsi,.tb,.kcopy,.kdl,a').forEach(el => {
+    el.addEventListener('mouseenter', hov, { passive: true });
+    el.addEventListener('mouseleave', hov, { passive: true });
   });
 }
 
@@ -1399,13 +1242,11 @@ if (fine) {
    TOAST
 ═══════════════════════════════════════════ */
 let _tT = null;
-function toast(msg, ico = '✅', dur = 3200) {
+function toast(msg, ico = '\u2705', dur = 3200) {
   document.getElementById('tmsg').textContent = msg;
   document.getElementById('ticon').textContent = ico;
-  const el = document.getElementById('toast');
-  el.classList.add('v');
-  clearTimeout(_tT);
-  _tT = setTimeout(() => el.classList.remove('v'), dur);
+  const el = document.getElementById('toast'); el.classList.add('v');
+  clearTimeout(_tT); _tT = setTimeout(() => el.classList.remove('v'), dur);
 }
 
 /* ═══════════════════════════════════════════
@@ -1415,31 +1256,32 @@ function rpl(e) {
   const b = e.currentTarget, r = document.createElement('span');
   const rc = b.getBoundingClientRect(), s = Math.max(rc.width, rc.height) * 2.1;
   r.className = 'rpl';
-  r.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (e.clientX - rc.left - s / 2) + 'px;top:' + (e.clientY - rc.top - s / 2) + 'px';
+  r.style.cssText = 'width:'+s+'px;height:'+s+'px;left:'+(e.clientX-rc.left-s/2)+'px;top:'+(e.clientY-rc.top-s/2)+'px';
   b.appendChild(r); r.addEventListener('animationend', () => r.remove(), { once: true });
 }
 
 /* ═══════════════════════════════════════════
-   NAVIGATION — GPU only (opacity + transform)
+   NAVIGATION
 ═══════════════════════════════════════════ */
-let pg = 'home';  // starts as 'home' but the page won't be active until gate passes
-const PM = { home:'pg-home', signin:'pg-signin', signup:'pg-signup',
-             dash:'pg-dash', dll:'pg-dll', clean:'pg-clean', kryp:'pg-kryp' };
+let pg = '__none__';
+const PM = {
+  home:'pg-home', signin:'pg-signin', signup:'pg-signup',
+  dash:'pg-dash', dll:'pg-dll', clean:'pg-clean',
+  kryp:'pg-kryp', textify:'pg-textify'
+};
 function nav(to) {
   if (to === pg) return;
-  const fr = document.getElementById(PM[pg]);
+  const fr = PM[pg] ? document.getElementById(PM[pg]) : null;
   const de = document.getElementById(PM[to]);
-  if (!fr || !de) return;
-  fr.classList.remove('active'); fr.classList.add('exit');
+  if (!de) return;
+  if (fr) { fr.classList.remove('active'); fr.classList.add('exit'); setTimeout(() => fr.classList.remove('exit'), 130); }
   setTimeout(() => {
-    fr.classList.remove('exit');
     de.scrollTop = 0; de.classList.add('active');
-    // Re-trigger stagger without forced reflow
     de.querySelectorAll('.sg').forEach(el => {
-      el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translate3d(0,12px,0)';
+      el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translate3d(0,11px,0)';
       requestAnimationFrame(() => requestAnimationFrame(() => { el.style.transition = ''; el.style.opacity = ''; el.style.transform = ''; }));
     });
-  }, 105);
+  }, fr ? 100 : 0);
   pg = to;
 }
 
@@ -1450,356 +1292,207 @@ function chkStr(v) {
   const sw = document.getElementById('sw'), sf = document.getElementById('swf'), sl = document.getElementById('swl');
   if (!v) { sw.classList.remove('v'); return; } sw.classList.add('v');
   let s = 0;
-  if (v.length >= 8) s++; if (v.length >= 12) s++;
+  if (v.length >= 6) s++; if (v.length >= 10) s++;
   if (/[A-Z]/.test(v)) s++; if (/[0-9]/.test(v)) s++; if (/[^A-Za-z0-9]/.test(v)) s++;
-  const L = [{ w:'20%',c:'#ff4444',l:'Weak' },{ w:'40%',c:'#ff8800',l:'Fair' },
-             { w:'60%',c:'#ffcc00',l:'Good' },{ w:'80%',c:'#88cc00',l:'Strong' },{ w:'100%',c:'#5dffc8',l:'Excellent' }];
+  const L = [{ w:'20%',c:'#ff4444',l:'Weak' },{ w:'40%',c:'#ff8800',l:'Fair' },{ w:'60%',c:'#ffcc00',l:'Good' },{ w:'80%',c:'#88cc00',l:'Strong' },{ w:'100%',c:'#4dffc0',l:'Excellent' }];
   const lv = L[Math.min(s, 4)]; sf.style.width = lv.w; sf.style.background = lv.c; sl.textContent = lv.l; sl.style.color = lv.c;
-}
-
-/* ═══════════════════════════════════════════
-   LICENSE KEY GENERATION
-   Format: XXXX-XXXX-XXXX-XXXX-XXXX
-   Uses crypto.getRandomValues for true randomness
-   Guarantees: no look-alike chars (0/O, 1/I/L), uniform distribution
-═══════════════════════════════════════════ */
-function generateKey() {
-  // 34 safe chars — removed ambiguous: 0,O,1,I,L
-  const C = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789abcdefghjkmnpqrstuvwxyz';
-  // Use crypto for true randomness
-  const rand = new Uint32Array(20);
-  crypto.getRandomValues(rand);
-  let key = '';
-  for (let i = 0; i < 20; i++) {
-    if (i > 0 && i % 4 === 0) key += '-';
-    key += C[rand[i] % C.length];
-  }
-  return key; // format: XXXX-XXXX-XXXX-XXXX-XXXX
-}
-
-// Check uniqueness against Firestore before using
-async function generateUniqueKey(db, tries = 0) {
-  if (tries > 8) return null; // safety cap
-  const { collection, query, where, getDocs } = window.__fb;
-  const key = generateKey();
-  const q = query(collection(db, 'licenseKeys'), where('key', '==', key));
-  const snap = await getDocs(q);
-  if (snap.empty) return key;
-  return generateUniqueKey(db, tries + 1);
-}
-
-/* ═══════════════════════════════════════════
-   FIREBASE AUTH
-═══════════════════════════════════════════ */
-let fbUser = null;
-function waitFB() {
-  return new Promise(res => {
-    if (window.__fb) { res(); return; }
-    addEventListener('fb-ready', res, { once: true });
-    setTimeout(res, 5000);
-  });
-}
-
-async function initAuth() {
-  await waitFB();
-  if (!window.__fb) { toast('Add Firebase config to enable auth', '⚙️', 7000); return; }
-  const { auth, onAuthStateChanged } = window.__fb;
-  onAuthStateChanged(auth, async u => {
-    fbUser = u;
-    const btn = document.getElementById('nav-btn');
-    if (u) {
-      if (btn) { btn.textContent = 'Dashboard'; btn.onclick = () => nav('dash'); }
-      if (pg === 'signin' || pg === 'signup') nav('dash');
-      await loadDash(u);
-    } else {
-      if (btn) { btn.textContent = 'Sign In'; btn.onclick = () => nav('signin'); }
-    }
-  });
-  renderPP();  // init PayPal buttons early
-}
-
-/* Google */
-async function signInGoogle() {
-  if (!RL.check('g-auth', 5, 60000)) return;
-  if (!window.__fb) { toast('Add Firebase config', '⚙️'); return; }
-  const { auth, gprov, signInWithPopup } = window.__fb;
-  try {
-    const r = await signInWithPopup(auth, gprov);
-    await saveUserDoc(r.user);
-    toast('Welcome, ' + (r.user.displayName || '').split(' ')[0] + '! 🎉', '✅');
-  } catch (e) { toast(parseErr(e), '❌'); }
-}
-
-/* Email Sign-Up */
-async function signUpEmail() {
-  if (!RL.check('signup', 3, 120000)) return;
-  const name = document.getElementById('su-n').value.trim();
-  const email = document.getElementById('su-e').value.trim();
-  const pass = document.getElementById('su-p').value;
-  clrE('su');
-  if (!name) return setE('su', 'Enter your full name');
-  if (!email || !email.includes('@')) return setE('su', 'Enter a valid email');
-  if (pass.length < 8) return setE('su', 'Password must be 8+ characters');
-  if (!window.__fb) { toast('Firebase not configured', '⚙️'); return; }
-  // reCAPTCHA check
-  const rc = await getRC('signup');
-  if (rc.score < RC_MIN_SCORE && rc.token !== 'norc') { toast('Security check failed. Try again.', '🔒'); return; }
-  const btn = document.getElementById('su-btn'); setLd(btn, 1, 'Create Account');
-  const { auth, createUserWithEmailAndPassword, sendEmailVerification } = window.__fb;
-  try {
-    const c = await createUserWithEmailAndPassword(auth, email, pass);
-    await sendEmailVerification(c.user);
-    await saveUserDoc(c.user, name);
-    toast('Account created! Verify your email.', '✅', 5000);
-  } catch (e) { setE('su', parseErr(e)); }
-  finally { setLd(btn, 0, 'Create Account'); }
-}
-
-/* Email Sign-In */
-async function signInEmail() {
-  if (!RL.check('signin', 5, 60000)) return;
-  const email = document.getElementById('si-e').value.trim();
-  const pass = document.getElementById('si-p').value;
-  clrE('si');
-  if (!email || !email.includes('@')) return setE('si', 'Enter a valid email');
-  if (!pass) return setE('si', 'Enter your password');
-  if (!window.__fb) { toast('Firebase not configured', '⚙️'); return; }
-  const rc = await getRC('signin');
-  if (rc.score < RC_MIN_SCORE && rc.token !== 'norc') { toast('Security check failed.', '🔒'); return; }
-  const btn = document.getElementById('si-btn'); setLd(btn, 1, 'Sign In');
-  const { auth, signInWithEmailAndPassword } = window.__fb;
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-    toast('Welcome back!', '✅');
-  } catch (e) { setE('si', parseErr(e)); }
-  finally { setLd(btn, 0, 'Sign In'); }
-}
-
-/* Sign Out */
-async function doSignOut() {
-  if (!window.__fb) return;
-  await window.__fb.SO(window.__fb.auth);
-  toast('Signed out', '👋');
-  nav('home');
-}
-
-/* Save user doc (only on first sign-in) */
-async function saveUserDoc(u, displayName) {
-  if (!window.__fb) return;
-  const { db, doc, setDoc, getDoc, serverTimestamp } = window.__fb;
-  const ref = doc(db, 'users', u.uid);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) {
-    await setDoc(ref, {
-      uid: u.uid, email: u.email,
-      displayName: displayName || u.displayName || u.email.split('@')[0],
-      photoURL: u.photoURL || null,
-      createdAt: serverTimestamp(),
-      subscription: { status: 'inactive', plan: null, startDate: null, expireDate: null }
-    });
-  }
-}
-
-/* Helpers */
-function setE(p, m) { const e = document.getElementById(p + '-err'), em = document.getElementById(p + '-em'); if (e && em) { e.classList.add('v'); em.textContent = m; } }
-function clrE(p) { const e = document.getElementById(p + '-err'); if (e) e.classList.remove('v'); }
-function setLd(b, on, lbl) { if (!b) return; b.disabled = !!on; b.innerHTML = on ? '<span class="sp"></span> Loading&hellip;' : (lbl + ' <span class="bico">&rarr;</span>'); }
-function parseErr(e) {
-  const m = { 'auth/email-already-in-use':'Email already registered.','auth/invalid-email':'Invalid email.','auth/wrong-password':'Wrong password.','auth/user-not-found':'No account with this email.','auth/too-many-requests':'Too many attempts. Try later.','auth/weak-password':'Password too weak.','auth/popup-closed-by-user':'Cancelled.','auth/network-request-failed':'Network error.' };
-  return m[e.code] || e.message || 'Auth error.';
 }
 
 /* ═══════════════════════════════════════════
    DASHBOARD
 ═══════════════════════════════════════════ */
 async function loadDash(u) {
-  if (!window.__fb) return;
+  if (!window.__fb) { setTimeout(() => loadDash(u), 500); return; }
   const { db, doc, getDoc } = window.__fb;
-  const snap = await getDoc(doc(db, 'users', u.uid));
-  const data = snap.exists() ? snap.data() : {};
-  // Avatar
-  const av = document.getElementById('d-av');
-  if (u.photoURL) { av.innerHTML = '<img src="' + u.photoURL + '">'; }
-  else { av.textContent = (data.displayName || u.email || '?').charAt(0).toUpperCase(); }
-  document.getElementById('d-nm').textContent = data.displayName || u.displayName || u.email;
-  document.getElementById('d-em').textContent = u.email;
-  renderSub(data.subscription || {});
-  await renderKeys(u.uid);
+  try {
+    const snap = await getDoc(doc(db, 'users', u.uid));
+    const data = snap.exists() ? snap.data() : {};
+    const nm = data.displayName || u.displayName || u.email;
+    const av = document.getElementById('d-av');
+    if (u.photoURL) { av.innerHTML = '<img src="'+u.photoURL+'" alt="">'; }
+    else { av.textContent = nm.charAt(0).toUpperCase(); }
+    document.getElementById('d-nm').textContent = nm;
+    document.getElementById('d-em').textContent = u.email;
+    renderSub(data.subscription || {});
+    await renderKeys(u.uid);
+  } catch (e) { console.warn('loadDash:', e.message); }
 }
 
 function renderSub(sub) {
-  let status = sub.status || 'inactive';
-  if (status === 'active' && sub.expireDate) {
+  let st = sub.status || 'inactive';
+  if (st === 'active' && sub.expireDate) {
     const exp = sub.expireDate.toDate ? sub.expireDate.toDate() : new Date(sub.expireDate);
-    if (Date.now() > exp.getTime()) status = 'expired';
+    if (Date.now() > exp.getTime()) st = 'expired';
   }
   const bdg = document.getElementById('sub-bdg');
-  bdg.className = 'sbdg ' + (status === 'active' ? 'sa' : status === 'expired' ? 'se' : 'si');
-  document.getElementById('sub-st').textContent = status === 'active' ? 'Active' : status === 'expired' ? 'Expired' : 'Inactive';
-  document.getElementById('sub-pl').textContent = sub.plan ? sub.plan.charAt(0).toUpperCase() + sub.plan.slice(1) : 'None';
-  const fmt = iso => { if (!iso) return '—'; const d = iso.toDate ? iso.toDate() : new Date(iso); return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }); };
+  bdg.className = 'sbdg ' + (st==='active'?'sa':st==='expired'?'se':'si');
+  document.getElementById('sub-st').textContent = st==='active'?'Active':st==='expired'?'Expired':'Inactive';
+  document.getElementById('sub-pl').textContent = sub.plan ? sub.plan.charAt(0).toUpperCase()+sub.plan.slice(1) : 'None';
+  const fmt = d => { if(!d) return '\u2014'; const dt=d.toDate?d.toDate():new Date(d); return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); };
   document.getElementById('sub-sd').textContent = fmt(sub.startDate);
   document.getElementById('sub-ed').textContent = fmt(sub.expireDate);
-  if (status === 'active' && sub.startDate && sub.expireDate) {
-    const sd = sub.startDate.toDate ? sub.startDate.toDate() : new Date(sub.startDate);
-    const ed = sub.expireDate.toDate ? sub.expireDate.toDate() : new Date(sub.expireDate);
-    const dLeft = Math.max(0, Math.ceil((ed - Date.now()) / 86400000));
-    document.getElementById('sub-dl').textContent = dLeft + ' days';
-    const pct = Math.min(100, Math.round((Date.now() - sd) / (ed - sd) * 100));
-    const pw = document.getElementById('pb-w'); pw.style.display = 'block';
-    setTimeout(() => { document.getElementById('pb-f').style.width = pct + '%'; document.getElementById('pb-p').textContent = pct + '%'; }, 250);
-  } else { document.getElementById('sub-dl').textContent = '—'; document.getElementById('pb-w').style.display = 'none'; }
+  if (st==='active'&&sub.startDate&&sub.expireDate) {
+    const sd=sub.startDate.toDate?sub.startDate.toDate():new Date(sub.startDate);
+    const ed=sub.expireDate.toDate?sub.expireDate.toDate():new Date(sub.expireDate);
+    const dLeft=Math.max(0,Math.ceil((ed-Date.now())/86400000));
+    document.getElementById('sub-dl').textContent=dLeft+' days';
+    const pct=Math.min(100,Math.round((Date.now()-sd)/(ed-sd)*100));
+    document.getElementById('pb-w').style.display='block';
+    setTimeout(()=>{document.getElementById('pb-f').style.width=pct+'%';document.getElementById('pb-p').textContent=pct+'%';},260);
+  } else {
+    document.getElementById('sub-dl').textContent='\u2014';
+    document.getElementById('pb-w').style.display='none';
+  }
 }
 
 async function renderKeys(uid) {
   if (!window.__fb) return;
   const { db, collection, query, where, getDocs } = window.__fb;
   try {
-    const snap = await getDocs(query(collection(db, 'licenseKeys'), where('uid', '==', uid)));
+    const snap = await getDocs(query(collection(db,'licenseKeys'),where('uid','==',uid)));
     const el = document.getElementById('keys-list');
-    if (snap.empty) { el.innerHTML = '<div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--mu)">No keys yet. Subscribe to generate your license key.</div>'; return; }
-    let html = '';
-    snap.forEach(d => {
-      const k = d.data();
-      const exp = k.expireDate?.toDate ? k.expireDate.toDate() : new Date(k.expireDate || 0);
-      const isExp = Date.now() > exp.getTime();
-      const isUsed = !!k.usedByHwid;
-      const stLbl = !k.active ? 'Disabled' : isUsed ? 'Activated' : isExp ? 'Expired' : 'Ready';
-      const clsExtra = !k.active || isExp ? 'disabled' : '';
-      const planLbl = (k.plan || '').charAt(0).toUpperCase() + (k.plan || '').slice(1);
-      const expStr = exp.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-      const dlHref = k.plan ? KRYPTO_DOWNLOAD : '#';
-      html += `<div class="kbox ${isExp ? 'expired' : isUsed ? 'used' : ''}">
-        <div class="klbl">
-          <span>🗝️ ${planLbl} Key &nbsp; [${stLbl}]</span>
-          <span style="color:var(--mu2);font-size:9px">Expires ${expStr}</span>
-        </div>
+    if (snap.empty) { el.innerHTML='<div style="font-family:\'Space Mono\',monospace;font-size:12px;color:var(--mu)">No keys yet. Subscribe to generate your license key.</div>'; return; }
+    let html='';
+    snap.forEach(d=>{
+      const k=d.data();
+      const exp=k.expireDate?.toDate?k.expireDate.toDate():new Date(k.expireDate||0);
+      const isExp=Date.now()>exp.getTime(), isUsed=!!k.usedByHwid, isDis=!k.active;
+      const cls=isDis?'kdis':isExp?'kexp':'';
+      const stLbl=isDis?'\u26D4 Disabled':isUsed?'\uD83D\uDD12 Activated':isExp?'\u231B Expired':'\u2705 Ready';
+      const planLbl=(k.plan||'').charAt(0).toUpperCase()+(k.plan||'').slice(1);
+      const expStr=exp.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+      html+=`<div class="kbox ${cls}">
+        <div class="klbl"><span>\uD83D\uDDD7\uFE0F ${planLbl} Key &nbsp; ${stLbl}</span><span style="color:var(--mu2);font-size:9px">Exp: ${expStr}</span></div>
         <div class="kval">${k.key}</div>
         <div class="krow">
-          ${!isExp && k.active ? `<button class="kcopy" onclick="cpKey('${k.key}')">📋 Copy Key</button>` : ''}
-          ${!isExp && k.active ? `<a class="kdl" href="${dlHref}" download>⬇ Download App</a>` : ''}
-          ${isExp ? '<span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--a2)">Key expired — subscribe to renew</span>' : ''}
-          ${!k.active && !isExp ? '<span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mu)">Key disabled by admin</span>' : ''}
+          ${!isExp&&!isDis?`<button class="kcopy" onclick="cpKey('${k.key}')">\uD83D\uDCCB Copy Key</button>`:'' }
+          ${!isExp&&!isDis?`<a class="kdl" href="${DL.krypto}" ${DL.krypto!=='#'?'download':''}>\u2B07 Download App</a>`:''}
+          ${isExp?'<span style="font-family:\'Space Mono\',monospace;font-size:11px;color:var(--a2)">Expired \u2014 subscribe to renew</span>':''}
+          ${isDis?'<span style="font-family:\'Space Mono\',monospace;font-size:11px;color:var(--mu)">Disabled by admin</span>':''}
         </div>
-        ${isUsed && !isExp ? '<div style="font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);margin-top:6px">🔒 Locked to 1 device. Opens app automatically on that device.</div>' : ''}
+        ${isUsed&&!isExp&&!isDis?'<div style="font-family:\'Space Mono\',monospace;font-size:10px;color:var(--mu);margin-top:5px">\uD83D\uDD12 Locked to 1 device. Opens automatically on that device.</div>':''}
       </div>`;
     });
-    el.innerHTML = html;
-  } catch (e) { console.error(e); }
+    el.innerHTML=html;
+  } catch(e) { console.warn('renderKeys:',e.message); }
 }
-
-function cpKey(k) { navigator.clipboard.writeText(k).then(() => toast('License key copied!', '📋')).catch(() => toast('Key: ' + k, '📋', 9000)); }
-function copyCS() { const c = document.getElementById('cs-code').textContent; navigator.clipboard.writeText(c).then(() => toast('C# code copied!', '📋')).catch(() => toast('Select the code and copy manually', '📋')); }
+function cpKey(k) { navigator.clipboard.writeText(k).then(()=>toast('Key copied!','\uD83D\uDCCB')).catch(()=>toast('Key: '+k,'\uD83D\uDCCB',9000)); }
 
 /* ═══════════════════════════════════════════
-   PAYPAL — real checkout, redirect flow
+   KEY GENERATION — cryptographically secure
 ═══════════════════════════════════════════ */
-let _ppPlan = 'y', _ppDone = false;
+function generateKey() {
+  // No ambiguous chars (0,O,1,I,L)
+  const C = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789abcdefghjkmnpqrstuvwxyz';
+  const r = new Uint32Array(20); crypto.getRandomValues(r);
+  let k = '';
+  for (let i=0; i<20; i++) { if(i>0&&i%4===0)k+='-'; k+=C[r[i]%C.length]; }
+  return k;
+}
+async function makeUniqueKey() {
+  if (!window.__fb) return generateKey();
+  const { db, collection, query, where, getDocs } = window.__fb;
+  for (let t=0; t<8; t++) {
+    const key = generateKey();
+    const snap = await getDocs(query(collection(db,'licenseKeys'),where('key','==',key)));
+    if (snap.empty) return key;
+  }
+  return generateKey();
+}
+
+/* ═══════════════════════════════════════════
+   PAYPAL
+═══════════════════════════════════════════ */
+let _ppPlan='y', _ppInit=false;
 function selPlan(p) {
-  _ppPlan = p;
-  document.getElementById('pm').classList.toggle('sel', p === 'm');
-  document.getElementById('py').classList.toggle('sel', p === 'y');
+  _ppPlan=p;
+  document.getElementById('pm').classList.toggle('sel',p==='m');
+  document.getElementById('py').classList.toggle('sel',p==='y');
 }
 function reqAuth() {
-  if (!fbUser) { toast('Please sign in first', '⚠️'); nav('signin'); return; }
+  if (!fbUser) { toast('Please sign in first','\u26A0\uFE0F'); nav('signin'); return; }
   document.getElementById('mo').classList.add('open');
 }
 function closeMo() { document.getElementById('mo').classList.remove('open'); }
-document.getElementById('mo').addEventListener('click', e => { if (e.target === e.currentTarget) closeMo(); });
+document.getElementById('mo').addEventListener('click',e=>{if(e.target===e.currentTarget)closeMo();});
 
-async function renderPP() {
-  await waitFB();
-  // Wait for PayPal SDK
-  let tries = 0;
-  while (typeof paypal === 'undefined' && tries++ < 20) await new Promise(r => setTimeout(r, 300));
-  if (typeof paypal === 'undefined') {
-    document.getElementById('pp-btn-wrap').innerHTML =
-      '<div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--mu);padding:12px;border:1px solid var(--bd);border-radius:9px;text-align:center">Add your PayPal Client ID in the config to enable payments.</div>';
+async function initPayPal() {
+  let tries=0;
+  while(typeof paypal==='undefined'&&tries++<20) await new Promise(r=>setTimeout(r,300));
+  if(typeof paypal==='undefined'){
+    document.getElementById('pp-btn-wrap').innerHTML=
+      '<p style="font-family:\'Space Mono\',monospace;font-size:11px;color:var(--mu);padding:10px;border:1px solid var(--bd);border-radius:8px;text-align:center">Add PayPal Client ID to enable payments.</p>';
     return;
   }
-  _ppDone = true;
+  if(_ppInit)return; _ppInit=true;
   paypal.Buttons({
-    style: { layout:'vertical', color:'blue', shape:'rect', label:'pay', height:42 },
-    async createOrder(data, actions) {
-      // reCAPTCHA before payment
-      const rc = await getRC('payment');
-      if (rc.score < RC_MIN_SCORE && rc.token !== 'norc') {
-        toast('Security check failed. Please try again.', '🔒');
-        return null;
-      }
-      const amt = _ppPlan === 'm' ? '4.99' : '29.99';
-      const desc = _ppPlan === 'm' ? 'Krypto Studio Monthly ($4.99)' : 'Krypto Studio Yearly ($29.99)';
-      return actions.order.create({
-        purchase_units: [{ amount: { value: amt, currency_code: 'USD' }, description: desc }]
-      });
+    style:{layout:'vertical',color:'blue',shape:'rect',label:'pay',height:40},
+    async createOrder(data,actions){
+      const tok=await execRC('payment');
+      const amt=_ppPlan==='m'?'4.99':'29.99';
+      const desc=_ppPlan==='m'?'Krypto Studio Monthly ($4.99)':'Krypto Studio Yearly ($29.99)';
+      return actions.order.create({purchase_units:[{amount:{value:amt,currency_code:'USD'},description:desc}]});
     },
-    async onApprove(data, actions) {
-      // Show processing overlay
-      document.getElementById('pp-btn-wrap').style.display = 'none';
-      document.getElementById('pp-proc').classList.add('v');
-      const order = await actions.order.capture();
-      document.getElementById('pp-proc').classList.remove('v');
-      document.getElementById('pp-btn-wrap').style.display = 'block';
-      if (order.status === 'COMPLETED') {
-        await activateLicense(_ppPlan === 'm' ? 'monthly' : 'yearly', _ppPlan === 'm' ? 30 : 365, order.id);
-      }
+    async onApprove(data,actions){
+      const wrap=document.getElementById('pp-btn-wrap'),proc=document.getElementById('pp-proc');
+      wrap.style.display='none';proc.classList.add('v');
+      try{
+        const order=await actions.order.capture();
+        if(order.status==='COMPLETED'){
+          await activateLicense(_ppPlan==='m'?'monthly':'yearly',_ppPlan==='m'?30:365,order.id);
+        }else{toast('Payment incomplete. Try again.','\u274C');}
+      }catch(e){console.error(e);toast('Payment error. Contact support.','\u274C');}
+      finally{proc.classList.remove('v');wrap.style.display='block';}
     },
-    onError(err) { console.error(err); toast('Payment error. Please retry.', '❌'); }
+    onError(err){console.error('PayPal:',err);toast('Payment failed. Retry.','\u274C');}
   }).render('#pp-btn-wrap');
 }
 
-async function activateLicense(plan, days, paypalId) {
-  if (!fbUser || !window.__fb) return;
-  const { db, doc, updateDoc, addDoc, collection, serverTimestamp, Timestamp } = window.__fb;
-  const now = new Date(), expire = new Date(now.getTime() + days * 86400000);
-  // Generate cryptographically unique key
-  const key = await generateUniqueKey(db);
-  if (!key) { toast('Key generation failed. Contact support.', '❌'); return; }
-  // Save subscription to user doc
-  await updateDoc(doc(db, 'users', fbUser.uid), {
-    'subscription.status': 'active',
-    'subscription.plan': plan,
-    'subscription.startDate': Timestamp.fromDate(now),
-    'subscription.expireDate': Timestamp.fromDate(expire),
-    'subscription.paypalOrderId': paypalId
-  });
-  // Save license key doc
-  await addDoc(collection(db, 'licenseKeys'), {
-    uid: fbUser.uid,
-    email: fbUser.email,
-    key: key,
-    plan: plan,
-    active: true,               // admin can set false to disable
-    usedByHwid: null,           // set by desktop app on first activation
-    usedAt: null,
-    createdAt: Timestamp.fromDate(now),
-    startDate: Timestamp.fromDate(now),
-    expireDate: Timestamp.fromDate(expire),
-    paypalOrderId: paypalId,
-    daysTotal: days
-  });
-  toast('Payment successful! 🎉 Your license key is ready.', '🎬', 6000);
-  closeMo();
-  await loadDash(fbUser);
-  if (pg !== 'dash') nav('dash');
+async function activateLicense(plan,days,ppId){
+  if(!fbUser||!window.__fb)return;
+  const{db,doc,updateDoc,addDoc,collection,serverTimestamp,Timestamp}=window.__fb;
+  const now=new Date(),expire=new Date(now.getTime()+days*86400000);
+  try{
+    const key=await makeUniqueKey();
+    await updateDoc(doc(db,'users',fbUser.uid),{
+      'subscription.status':'active','subscription.plan':plan,
+      'subscription.startDate':Timestamp.fromDate(now),
+      'subscription.expireDate':Timestamp.fromDate(expire),
+      'subscription.paypalOrderId':ppId
+    });
+    await addDoc(collection(db,'licenseKeys'),{
+      uid:fbUser.uid,email:fbUser.email,key,plan,
+      active:true,usedByHwid:null,usedAt:null,
+      createdAt:Timestamp.fromDate(now),startDate:Timestamp.fromDate(now),
+      expireDate:Timestamp.fromDate(expire),paypalOrderId:ppId,daysTotal:days
+    });
+    toast('Payment successful! \uD83C\uDF89 License key ready.','\uD83C\uDFAC',6000);
+    closeMo();
+    await loadDash(fbUser);
+    if(pg!=='dash')nav('dash');
+  }catch(e){console.error('activateLicense:',e);toast('Error saving license. Contact support.','\u274C');}
 }
 
 /* ═══════════════════════════════════════════
-   CARD TILT (desktop only, rAF)
+   CARD TILT (desktop only)
 ═══════════════════════════════════════════ */
-if (fine) {
-  document.querySelectorAll('.card').forEach(card => {
-    let cx = 0, cy = 0, tx2 = 0, ty2 = 0, rf = null;
-    const tk = () => { cx += (tx2 - cx) * .1; cy += (ty2 - cy) * .1; card.style.transform = 'translate3d(0,-6px,0) rotateX(' + cy + 'deg) rotateY(' + cx + 'deg)'; rf = requestAnimationFrame(tk); };
-    card.addEventListener('mousemove', e => { const r = card.getBoundingClientRect(); tx2 = ((e.clientX - r.left) / r.width - .5) * 7; ty2 = -(((e.clientY - r.top) / r.height - .5) * 6); }, { passive: true });
-    card.addEventListener('mouseenter', () => { card.style.transition = 'none'; rf = requestAnimationFrame(tk); });
-    card.addEventListener('mouseleave', () => { cancelAnimationFrame(rf); card.style.transition = 'transform 440ms cubic-bezier(.22,1,.36,1)'; card.style.transform = 'translate3d(0,0,0) rotateX(0) rotateY(0)'; });
+if(fine){
+  document.querySelectorAll('.card').forEach(card=>{
+    let cx=0,cy=0,tx=0,ty=0,rf=null;
+    const tk=()=>{cx+=(tx-cx)*.09;cy+=(ty-cy)*.09;card.style.transform='translate3d(0,-6px,0) rotateX('+cy+'deg) rotateY('+cx+'deg)';rf=requestAnimationFrame(tk);};
+    card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();tx=((e.clientX-r.left)/r.width-.5)*7;ty=-(((e.clientY-r.top)/r.height-.5)*5.5);},{passive:true});
+    card.addEventListener('mouseenter',()=>{card.style.transition='none';rf=requestAnimationFrame(tk);});
+    card.addEventListener('mouseleave',()=>{cancelAnimationFrame(rf);card.style.transition='transform 400ms cubic-bezier(.22,1,.36,1)';card.style.transform='translate3d(0,0,0) rotateX(0) rotateY(0)';});
   });
 }
 
 /* ═══ START ═══ */
-// Run captcha gate on load — page won't activate until gate passes
-document.addEventListener('DOMContentLoaded', runGate);
+// Run gate on page load
+if (document.readyState === 'loading') {
+  addEventListener('DOMContentLoaded', runGate);
+} else {
+  runGate();
+}
 </script>
 </body>
 </html>
